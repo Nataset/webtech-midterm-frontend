@@ -8,7 +8,7 @@
         v-for="(product, index) in products"
         v-bind:key="index"
         :title="product.name"
-        :price="product.price"
+        :price="product.price.toFixed(2)"
         :picURL="'http://localhost:1337' + product.photo.formats.small.url"
       ></product>
     </div>
@@ -25,18 +25,12 @@ export default {
   data: () => {
     return {
       products: [],
-      productPhotes: [1, 2, 3],
     };
   },
   components: { Jumbotron, Product },
   async created() {
     await ShopStore.dispatch("fetchAllproduct");
     this.fetchProductData();
-    this.products.forEach((obj) => {
-      console.log(obj.photo.formats.small.url);
-    });
-
-    // console.log(this.products[0].photo.formats.small.url);
   },
   methods: {
     fetchProductData() {

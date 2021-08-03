@@ -8,7 +8,7 @@
       height="250"
     />
     <h4 class="mt-3">{{ title ? title : "PRODUCT TITLE" }}</h4>
-    <h5 class="mt-1">Price: {{ price ? price : "PRODUCT PRICE" }}</h5>
+    <h5 class="mt-1">Price: {{ price ? price : "PRODUCT PRICE" }} Bath</h5>
     <div>
       <button type="button" class="btn btn-danger px-5 mb-4">
         &nbsp;&nbsp;&nbsp;&nbsp;BUY NOW!!&nbsp;&nbsp;&nbsp;&nbsp;
