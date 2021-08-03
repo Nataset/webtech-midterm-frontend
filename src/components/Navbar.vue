@@ -58,7 +58,7 @@
           >
         </li>
         <li class="nav-item text-center mx-5">
-          <router-link class="nav-link text-uppercase" to="#"
+          <router-link class="nav-link text-uppercase" to="/leaderboard"
             >Leaderboard</router-link
           >
         </li>
