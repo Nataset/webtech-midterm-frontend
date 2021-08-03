@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import UserProfile from '@/views/UserProfile.vue'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
+import LeaderBoard from '@/views/LeaderBoard.vue'
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/leaderboard',
+    name: 'LeaderBoard',
+    component: LeaderBoard
   },
 ]
 

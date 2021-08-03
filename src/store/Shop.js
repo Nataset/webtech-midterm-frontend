@@ -18,6 +18,7 @@ const initialStateUser = {
 export default new Vuex.Store({
   state: {
       currentUser: initialStateUser,
+      allUser: [],
       product: [],
       reward: [],
       point: [],
@@ -27,12 +28,15 @@ export default new Vuex.Store({
       getCurrentUser: (state) => state.currentUser
   },
   mutations: {
+    fetchAllUser(state, { res }){
+        state.allUser = res.data
+    },
     fetchProduct(state, { res }){
         state.product = res.data
-      },
+    },
     fetchReward(state, { res }){
         state.reward = res.data
-      },
+    },
     setCurrentUser(state, user , jwt){
         state.currentUser.user = user,
         state.currentUser.jwt = jwt,
@@ -41,6 +45,11 @@ export default new Vuex.Store({
     
   },
   actions: {
+    async fetchAllUser({commit}){
+      let res = await axios.get(end_point + "/userdata")
+      // console.log(res)
+      commit('fetchAllUser',{res})
+    },
     async fetchAllproduct({commit}){
       let res = await axios.get(end_point + "/products")
       // console.log(res)
