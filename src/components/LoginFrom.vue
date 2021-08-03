@@ -1,6 +1,7 @@
 <template>
   <div align='center'>
       <h2>Login</h2>
+      <form @submit.prevent="login">
       <table>
           <tr>
               <td>Username :</td>
@@ -12,17 +13,16 @@
           </tr>
       </table>
       <div>
-      <button @click="login">Login</button>
+      <button>Login</button>
       <button @click="goToRegister">Register</button>
       </div>
-      <div>
-      <label for="loginStatus">{{ loginFrom.loginStatus }}</label>
-      </div>
+      </form>
   </div>
 </template>
 
 <script>
 import ShopStore from '@/store/Shop'
+import AuthService from '@/services/AuthService'
 export default {
     data(){
         return {
@@ -31,12 +31,11 @@ export default {
             loginFrom:{
                 username:'',
                 password:'',
-                loginStatus:''
             }
         }
     },created(){
         //เรียก modthod
-        this.fetchAllUser()
+        // this.fetchAllUser()
     },
     methods: {
         async fetchAllUser(){
@@ -44,27 +43,41 @@ export default {
             await ShopStore.dispatch('fetchAlluser')
             this.allUser = ShopStore.getters.getAllUser
         },
-        login(){
-            let found = false;
-            this.allUser.forEach(element => {
-                if(element.Username === this.loginFrom.username && element.Password === this.loginFrom.password)
-                {
-                    this.currentUser = element;
-                    // console.log("login success. ID:" + element.id)
-                    found = true
-                }
-            });
-            if(found){
-                // console.log(this.currentUser)
-                this.loginFrom.loginStatus = 'login success.'
+        async login(){
+            let res = await AuthService.login(this.loginFrom)
+             if (res.success){
+                alert("Login Success" + `Welcome, ${res.user.username}`)
+                // console.log(res.user);
+                this.currentUser = res.user
+                // console.log(this.currentUser);
                 ShopStore.dispatch('setCurrentUser',this.currentUser)
                 this.clearFrom()
             }
             else{
-                // console.log("Invaild Username or password.Please check your username and password !.")
-                this.loginFrom.loginStatus = 'Invaild Username or password.Please check your username and password !.'
+                alert("Login Failed" + res.message);
             }
         },
+        // login(){
+        //     let found = false;
+        //     this.allUser.forEach(element => {
+        //         if(element.Username === this.loginFrom.username && element.Password === this.loginFrom.password)
+        //         {
+        //             this.currentUser = element;
+        //             // console.log("login success. ID:" + element.id)
+        //             found = true
+        //         }
+        //     });
+        //     if(found){
+        //         // console.log(this.currentUser)
+        //         this.loginFrom.loginStatus = 'login success.'
+        //         ShopStore.dispatch('setCurrentUser',this.currentUser)
+        //         this.clearFrom()
+        //     }
+        //     else{
+        //         // console.log("Invaild Username or password.Please check your username and password !.")
+        //         this.loginFrom.loginStatus = 'Invaild Username or password.Please check your username and password !.'
+        //     }
+        // },
         goToRegister(){
             this.$router.push('/register')
         },

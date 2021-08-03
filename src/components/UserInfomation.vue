@@ -5,23 +5,23 @@
       <table>
           <tr>
               <td>Username</td>
-              <td><label for="Username">{{ currentUser.Username }}</label></td>
+              <td><label for="Username">{{ currentUser.user.username }}</label></td>
           </tr>
           <tr>
               <td>Name</td>
-              <td><label for="Name">{{ currentUser.Firstname +' '+ currentUser.Lastname }}</label></td>
+              <td><label for="Name">{{ currentUser.user.firstname +' '+ currentUser.user.lastname }}</label></td>
           </tr>
           <tr>
               <td>Email</td>
-              <td><label for="Email">{{ currentUser.Email }}</label></td>
+              <td><label for="Email">{{ currentUser.user.email }}</label></td>
           </tr>
           <tr>
               <td>Money</td>
-              <td><label for="Money">{{ currentUser.Money }}</label></td>
+              <td><label for="Money">{{ currentUser.user.money }}</label></td>
           </tr>
       </table>
       <h2>Point</h2>
-    <h3>Total Point : {{ currentUser.AllPoint }}</h3>
+    <h3>Total Point : {{ currentUser.user.allPoint }}</h3>
       <table>
           <thead>
               <tr>
@@ -32,7 +32,7 @@
               </tr>
           </thead>
         <tbody>
-            <tr v-for="(point,index) in currentUser.Points" :key="index">
+            <tr v-for="(point,index) in currentUser.points" :key="index">
             <td>{{ index+1 }}</td>
             <td>{{ point.Time }}</td>
             <td>{{ point.Type }}</td>
