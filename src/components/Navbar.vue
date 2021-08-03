@@ -16,7 +16,7 @@
           <label class="ms-3" style="font-family: Raleway">LOGO</label>
         </div>
         <div class="col align-self-center text-end">
-          <router-link to="/" class="me-4"
+          <router-link to="/login" class="me-4"
             ><button
               type="button"
               class="btn btn-outline-dark px-3"
@@ -25,7 +25,7 @@
               LOGIN
             </button></router-link
           >
-          <router-link to="/" class="me-3"
+          <router-link to="/register" class="me-3"
             ><button
               type="button"
               class="btn btn-danger px-5"
@@ -63,7 +63,7 @@
           >
         </li>
         <li class="nav-item text-center mx-5">
-          <router-link class="nav-link text-uppercase" to="#"
+          <router-link class="nav-link text-uppercase" to="/profile"
             >Profile</router-link
           >
         </li>

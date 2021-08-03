@@ -2,13 +2,13 @@
   <div id="app">
     <navbar></navbar>
     <router-view />
-    <footer></footer>
+    <footer-bar></footer-bar>
   </div>
 </template>
 
 <script>
 import Navbar from "./components/Navbar.vue";
-import Footer from "./components/Footer.vue";
+import FooterBar from "./components/Footer.vue";
 import "bootstrap/scss/bootstrap.scss";
 import "@popperjs/core";
 import "bootstrap";
@@ -16,7 +16,7 @@ import "bootstrap";
 export default {
   components: {
     Navbar,
-    Footer,
+    FooterBar,
   },
 };
 </script>
