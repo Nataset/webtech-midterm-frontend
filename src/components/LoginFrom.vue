@@ -40,7 +40,7 @@ export default {
     methods: {
         async fetchAllUser(){
             //เรียก action ใน Store ใช่ Store.dispatch(ชื่อ action)
-            await ShopStore.dispatch('fetchAlluser')
+            await ShopStore.dispatch('fetchAllUser')
             this.allUser = ShopStore.getters.getAllUser
         },
         async login(){
