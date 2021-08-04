@@ -50,11 +50,15 @@ export default new Vuex.Store({
                 (state.currentUser.jwt = ''),
                 (state.currentUser.isAuthen = false)
             console.log(state.currentUser)
+        },
+        setMoney(state, money) {
+            state.currentUser.money = money;
+            // console.log(money);
         }
     },
     actions: {
         async fetchAllUser({ commit }) {
-            let res = await axios.get(end_point + '/userdata');
+            let res = await axios.get(end_point + '/users');
             // console.log(res)
             commit('fetchAllUser', { res });
         },
@@ -89,6 +93,17 @@ export default new Vuex.Store({
                 commit("setCurrentUser", res.user, res.jwt)
             }
             return res
+        },
+        async addMoney({ commit }, { id, money }){
+            try {
+                let url = end_point + '/users/' + id;
+                let body = { money: money };
+                let header = AuthService.getApiHeader();
+                await axios.put(url, body, header)
+            } catch (error) {
+                console.log(error);
+            }
+            commit('setMoney', money)
         }
     },
     modules: {},

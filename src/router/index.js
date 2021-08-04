@@ -6,6 +6,7 @@ import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import LeaderBoard from '@/views/LeaderBoard.vue'
 import Logout from '@/views/Logout.vue'
+import Topup from '@/views/Topup.vue'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes = [
     path: '/logout',
     name: 'Logout',
     component: Logout
+  },
+  {
+    path: '/Topup',
+    name: 'Topup',
+    component: Topup
   },
 ]
 

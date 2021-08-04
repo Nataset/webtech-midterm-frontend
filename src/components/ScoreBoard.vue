@@ -11,8 +11,8 @@
             <tbody>
                 <tr v-for="(user, index) in findTopList()" :key="index" >
                     <td>{{ index + 1 }}</td>
-                    <td>{{ user.Username }}</td>
-                    <td>{{ user.AllPoint }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.allPoint }}</td>
                 </tr>
             </tbody>
         </table>

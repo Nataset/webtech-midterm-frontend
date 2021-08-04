@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <h2>Leaderboard</h2>
+    <div class="main-container">
+        <h2 class="title">Leaderboard</h2>
         <!-- User view -->
         <ScoreBoard :data='allUser'/>
     </div>
@@ -38,6 +38,12 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+    .main-container{
+        text-align: center;
+        .title {
+            margin: .5em;
+        }
+    }
+</style>>
 
-</style>
