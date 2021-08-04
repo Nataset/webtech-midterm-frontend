@@ -38,7 +38,7 @@
         <tbody>
             <tr v-for="(points,index) in currentUser.user.points" :key="index">
             <td>{{ index+1 }}</td>
-            <td>{{ points.created_at }}</td>
+            <td>{{ setDateFormat(points.created_at)}}</td>
             <td>{{ points.type }}</td>
             <td>{{ points.amount }}</td>
             </tr>
@@ -59,7 +59,7 @@
             <td>{{ index+1 }}</td>
             <td>{{ Purchased.product.name}}</td>
             <td>{{ Purchased.product.price}}</td>
-            <td>{{ Purchased.time}}</td>
+            <td>{{ setDateFormat(Purchased.time)}}</td>
               </tr>
           </tbody>
       </table>
@@ -78,7 +78,7 @@
             <td>{{ redeemindex+1 }}</td>
             <td>{{ redeemed.reward.name }}</td>
             <td>{{ redeemed.reward.point }}</td>
-            <td>{{ redeemed.time }}</td>
+            <td>{{ setDateFormat(redeemed.time) }}</td>
               </tr>
           </tbody>
       </table>
@@ -88,6 +88,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import ShopStore from '@/store/Shop'
 export default {
     data(){
@@ -113,12 +114,8 @@ export default {
             this.$router.push("/login")
         }
         this.fetchAllData()
-        console.log(this.currentUser.purchases);
-        console.log(this.currentUser.redeems);
         this.setProduct()
         this.setReward()
-
-        console.log(currentUser.user.redeems);
         // console.log(this.allReward);
  
     },
@@ -163,6 +160,9 @@ export default {
                 }
             });
             return target
+        },
+        setDateFormat(date){
+            return moment(date).format("D MMM YYYY HH:mm:ss")
         }
     }
 }
