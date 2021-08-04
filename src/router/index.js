@@ -5,6 +5,7 @@ import UserProfile from '@/views/UserProfile.vue'
 import Login from '@/views/Login.vue'
 import Register from '@/views/Register.vue'
 import LeaderBoard from '@/views/LeaderBoard.vue'
+import Logout from '@/views/Logout.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,11 @@ const routes = [
     path: '/leaderboard',
     name: 'LeaderBoard',
     component: LeaderBoard
+  },
+  {
+    path: '/logout',
+    name: 'Logout',
+    component: Logout
   },
 ]
 

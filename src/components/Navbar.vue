@@ -16,7 +16,7 @@
           <label class="ms-3" style="font-family: Raleway">LOGO</label>
         </div>
         <div class="col align-self-center text-end">
-          <router-link to="/login" class="me-4"
+          <router-link to="/login" class="me-4" v-if="!isAuthen() "
             ><button
               type="button"
               class="btn btn-outline-dark px-3"
@@ -25,7 +25,16 @@
               LOGIN
             </button></router-link
           >
-          <router-link to="/register" class="me-3"
+          <router-link to="/logout" class="me-4" v-if="isAuthen()"
+            ><button
+              type="button"
+              class="btn btn-outline-dark px-3"
+              style="font-family: Raleway"
+            >
+              LOGOUT
+            </button></router-link
+          >
+          <router-link to="/register" class="me-3" v-if="!isAuthen()"
             ><button
               type="button"
               class="btn btn-danger px-5"
@@ -76,8 +85,15 @@
 import "bootstrap/scss/bootstrap.scss";
 import "@popperjs/core";
 import "bootstrap";
+import ShopStore from '@/store/Shop'
+
 
 export default {
+    methods: {
+      isAuthen(){
+        return ShopStore.getters.isAuthen
+      }
+    },
   name: "Navbar",
 };
 </script>

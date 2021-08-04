@@ -1,6 +1,6 @@
 <template>
   <div align='center'>
-      <div v-if="currentUser !== ''">
+      <div>
       <h2>User Profile</h2>
       <table>
           <tr>
@@ -14,6 +14,10 @@
           <tr>
               <td>Email</td>
               <td><label for="Email">{{ currentUser.user.email }}</label></td>
+          </tr>
+           <tr>
+            <td>Address</td>
+              <td><label for="Money">{{ currentUser.user.address }}</label></td>
           </tr>
           <tr>
               <td>Money</td>
@@ -32,11 +36,11 @@
               </tr>
           </thead>
         <tbody>
-            <tr v-for="(point,index) in currentUser.points" :key="index">
+            <tr v-for="(points,index) in currentUser.user.points" :key="index">
             <td>{{ index+1 }}</td>
-            <td>{{ point.Time }}</td>
-            <td>{{ point.Type }}</td>
-            <td>{{ point.Amount }}</td>
+            <td>{{ points.created_at }}</td>
+            <td>{{ points.type }}</td>
+            <td>{{ points.amount }}</td>
             </tr>
         </tbody>
       </table>
@@ -51,11 +55,11 @@
               </tr>
           </thead>
           <tbody>
-              <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+              <tr v-for="(Purchased,index) in currentUser.user.purchases" :key="index">
+            <td>{{ index+1 }}</td>
+            <td>{{ Purchased.product.name}}</td>
+            <td>{{ Purchased.product.price}}</td>
+            <td>{{ Purchased.time}}</td>
               </tr>
           </tbody>
       </table>
@@ -70,18 +74,14 @@
               </tr>
           </thead>
           <tbody>
-              <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+              <tr v-for="(redeemed,redeemindex) in currentUser.user.redeems" :key="redeemindex">
+            <td>{{ redeemindex+1 }}</td>
+            <td>{{ redeemed.reward.name }}</td>
+            <td>{{ redeemed.reward.point }}</td>
+            <td>{{ redeemed.time }}</td>
               </tr>
           </tbody>
       </table>
-      </div>
-      <div v-if="currentUser === ''">
-          <h2>Please login.</h2>
-          click this <button @click="goToLogin">Login</button> to go to login page.
       </div>
   </div>
 
@@ -92,20 +92,77 @@ import ShopStore from '@/store/Shop'
 export default {
     data(){
         return {
-            allUser: [],
+            allProduct: [],
+            allReward:[],
+            tableReward:[],
             currentUser:'',
+            Form:{
+                username:'',
+                email:'',
+                address:'',
+                firstname:'',
+                lastname:'',
+                money:0,
+                Allpoint:0,
+            }
         }
     },created(){
         //เรียก modthod
+       if(this.isAuthen()=== false){
+            this.$swal("You are not logged in.","Please login and go to this page again","error")
+            this.$router.push("/login")
+        }
         this.fetchAllData()
+        console.log(this.currentUser.purchases);
+        console.log(this.currentUser.redeems);
+        this.setProduct()
+        this.setReward()
+
+        console.log(currentUser.user.redeems);
+        // console.log(this.allReward);
+ 
     },
     methods: {
         fetchAllData(){
-            this.allUser = ShopStore.getters.getAllUser
-            this.currentUser = ShopStore.getters.getCurrentUser
+            this.currentUser = JSON.parse(JSON.stringify(ShopStore.getters.getCurrentUser))
+            this.allProduct = ShopStore.getters.getProductList
+            this.allReward = ShopStore.getters.getRewardList
         },
         goToLogin(){
             this.$router.push('/login')
+        },
+        isAuthen(){
+            return ShopStore.getters.isAuthen
+        },
+        setProduct(){
+            this.currentUser.user.purchases.forEach(element => {
+                let id = element.product
+                element.product = this.findProduct(id)
+            });
+        },
+        findProduct(id){
+            let target = ''
+            this.allProduct.forEach(element => {
+                if(element.id === id){
+                    target = element
+                }
+            });
+            return target
+        },
+        setReward(){
+            this.currentUser.user.redeems.forEach(element => {
+                let id = element.reward
+                element.reward = this.findReward(id)
+            });
+        },
+        findReward(id){
+            let target = ''
+            this.allReward.forEach(element => {
+                if(element.id === id){
+                    target = element
+                }
+            });
+            return target
         }
     }
 }

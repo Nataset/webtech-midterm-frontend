@@ -11,7 +11,16 @@ export default {
     isAuthen(){
         return (user !== "") && (jwt !== "")
     },
-
+    getApiHeader(){
+        if(jwt !== ""){
+            return{
+                headers:{
+                    Authorization: `Bearer ${jwt}`
+                }
+            }      
+        }
+        return {}  
+    },
     getUser(){
         return user
     },
@@ -51,8 +60,41 @@ export default {
         }
     },
 
-    async register({ username, email, password }){
-
+    async register({ username, email, password ,firstname, lastname, address, money, allPoint}){
+        try {
+            let url = `${api_endpoint}/auth/local/register`
+            let body = {
+                username: username,
+                email: email,
+                password: password,
+                firstname: firstname,
+                lastname: lastname,
+                address: address,
+                money: money,
+                allPoint: allPoint,
+            }
+            let res = await Axios.post(url, body)
+            if(res.status === 200){
+                localStorage.setItem(auth_key, JSON.stringify(res.data))
+                return {
+                    success: true,
+                    user: res.data.user,
+                    jwt: res.data.jwt
+                }
+            }else{
+                console.log("NOT 200", res);
+            }
+        } catch (e) {
+            if(e.response.status === 400){
+                // console.log(e.response.data.message[0].messages[0].message);
+                return {
+                    success: false,
+                    message: e.response.data.message[0].messages[0].message
+                }
+            } else {
+                return
+            }
+        }
     },
 
     logout(){

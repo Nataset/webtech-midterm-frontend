@@ -30,6 +30,7 @@ export default {
   components: { Jumbotron, Product },
   async created() {
     await ShopStore.dispatch("fetchAllproduct");
+    await ShopStore.dispatch("fetchAllreward")
     this.fetchProductData();
   },
   methods: {
