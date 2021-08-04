@@ -7,35 +7,48 @@
       <product
         v-for="(product, index) in products"
         v-bind:key="index"
-        :title="product.name"
-        :price="product.price.toFixed(2)"
-        :picURL="'http://localhost:1337' + product.photo.formats.small.url"
+        :product="product"
+        :endPoint="endPoint"
       ></product>
     </div>
   </div>
 </template>
 
 <script>
-import Jumbotron from "./../components/homepage/Jumbotron.vue";
-import Product from "../components/homepage/Product.vue";
+import Jumbotron from "./../components/home/Jumbotron.vue";
+import Product from "../components/home/Product.vue";
 import ShopStore from "@/store/Shop";
 
 export default {
   name: "Home",
   data: () => {
     return {
+      currentUser: [],
       products: [],
+      endPoint: "",
     };
   },
   components: { Jumbotron, Product },
   async created() {
-    await ShopStore.dispatch("fetchAllproduct");
-    await ShopStore.dispatch("fetchAllreward")
-    this.fetchProductData();
+    await this.initData();
+    console.log(this.currentUser);
   },
   methods: {
+    async initData() {
+      await ShopStore.dispatch("fetchAllproduct");
+      await ShopStore.dispatch("fetchAllreward");
+      this.fetchProductData();
+      this.getCurrent();
+      this.getEndPoint();
+    },
     fetchProductData() {
       this.products = ShopStore.getters.getProductList;
+    },
+    getEndPoint() {
+      this.endPoint = ShopStore.getters.getEndPoint;
+    },
+    getCurrent() {
+      this.currentUser = ShopStore.getters.getCurrentUser;
     },
   },
 };

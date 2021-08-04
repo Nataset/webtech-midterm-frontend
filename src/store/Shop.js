@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import AuthService from '@/services/AuthService';
 
-let end_point = process.env.SHOP_ENDPOINT || 'http://localhost:1337';
+const end_point = process.env.SHOP_VUE_APP_SHOP_ENDPOINT || 'http://localhost:1337';
 
 Vue.use(Vuex);
 
@@ -18,6 +18,7 @@ const initialStateUser = {
 export default new Vuex.Store({
     state: {
         currentUser: initialStateUser,
+        endPoint: end_point,
         allUser: [],
         product: [],
         reward: [],
@@ -28,7 +29,8 @@ export default new Vuex.Store({
         getCurrentUser: state => state.currentUser,
         getProductList: state => state.product,
         getRewardList: state => state.reward,
-        isAuthen: state => state.currentUser.isAuthen
+        getEndPoint: state => state.endPoint,
+        isAuthen: state => state.currentUser.isAuthen,
     },
     mutations: {
         fetchAllUser(state, { res }) {
@@ -45,16 +47,16 @@ export default new Vuex.Store({
                 (state.currentUser.jwt = jwt),
                 (state.currentUser.isAuthen = true);
         },
-        logoutSuccess(state){
+        logoutSuccess(state) {
             (state.currentUser.user = ''),
                 (state.currentUser.jwt = ''),
-                (state.currentUser.isAuthen = false)
-            console.log(state.currentUser)
+                (state.currentUser.isAuthen = false);
+            console.log(state.currentUser);
         },
         setMoney(state, money) {
             state.currentUser.money = money;
             // console.log(money);
-        }
+        },
     },
     actions: {
         async fetchAllUser({ commit }) {
@@ -83,28 +85,40 @@ export default new Vuex.Store({
             }
             return res;
         },
-        async logout({commit}){
-            AuthService.logout()
-            commit('logoutSuccess')
+        async logout({ commit }) {
+            AuthService.logout();
+            commit('logoutSuccess');
         },
-        async register({commit}, { username, email, password ,firstname, lastname, address, money, allPoint}){
-            let res = await AuthService.register({ username, email, password ,firstname, lastname, address, money, allPoint})
-            if(res.success){
-                commit("setCurrentUser", res.user, res.jwt)
+        async register(
+            { commit },
+            { username, email, password, firstname, lastname, address, money, allPoint },
+        ) {
+            let res = await AuthService.register({
+                username,
+                email,
+                password,
+                firstname,
+                lastname,
+                address,
+                money,
+                allPoint,
+            });
+            if (res.success) {
+                commit('setCurrentUser', res.user, res.jwt);
             }
-            return res
+            return res;
         },
-        async addMoney({ commit }, { id, money }){
+        async addMoney({ commit }, { id, money }) {
             try {
                 let url = end_point + '/users/' + id;
                 let body = { money: money };
                 let header = AuthService.getApiHeader();
-                await axios.put(url, body, header)
+                await axios.put(url, body, header);
             } catch (error) {
                 console.log(error);
             }
-            commit('setMoney', money)
-        }
+            commit('setMoney', money);
+        },
     },
     modules: {},
 });

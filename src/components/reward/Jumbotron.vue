@@ -18,7 +18,7 @@ export default {
   z-index: -1;
   height: 550px;
   width: 100%;
-  background-image: url("./../../../public/jumbotron.jpg");
+  background-image: url("./../../../public/jumbotron_reward.jpg");
   background-repeat: no-repeat;
   background-position: center;
 }

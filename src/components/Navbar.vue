@@ -16,7 +16,7 @@
           <label class="ms-3" style="font-family: Raleway">LOGO</label>
         </div>
         <div class="col align-self-center text-end">
-          <router-link to="/login" class="me-4" v-if="!isAuthen() "
+          <router-link to="/login" class="me-4" v-if="!isAuthen()"
             ><button
               type="button"
               class="btn btn-outline-dark px-3"
@@ -62,7 +62,7 @@
           >
         </li>
         <li class="nav-item text-center mx-5">
-          <router-link class="nav-link text-uppercase" to="#"
+          <router-link class="nav-link text-uppercase" to="/reward"
             >Reward</router-link
           >
         </li>
@@ -85,15 +85,14 @@
 import "bootstrap/scss/bootstrap.scss";
 import "@popperjs/core";
 import "bootstrap";
-import ShopStore from '@/store/Shop'
-
+import ShopStore from "@/store/Shop";
 
 export default {
-    methods: {
-      isAuthen(){
-        return ShopStore.getters.isAuthen
-      }
+  methods: {
+    isAuthen() {
+      return ShopStore.getters.isAuthen;
     },
+  },
   name: "Navbar",
 };
 </script>
