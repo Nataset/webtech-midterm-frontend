@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "Jumbotron",
+  name: "Jumbotron_reward",
 };
 </script>
 
@@ -25,6 +25,6 @@ export default {
 
 #jumbotron-space {
   width: 100%;
-  height: 440px;
+  height: 465px;
 }
 </style>

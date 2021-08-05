@@ -26,9 +26,6 @@ export default {
     };
   },
   created() {
-    // this.getValidImageUrl(this.picURL).then(
-    //   (result) => (this.validImageUrl = result)
-    // );
     this.validProductData();
   },
   methods: {

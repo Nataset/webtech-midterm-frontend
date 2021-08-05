@@ -7,7 +7,7 @@ import Register from '@/views/Register.vue';
 import LeaderBoard from '@/views/LeaderBoard.vue';
 import Logout from '@/views/Logout.vue';
 import Topup from '@/views/Topup.vue';
-import Reward from '../views/Reward.vue';
+import Reward from '../views/Rewards.vue';
 
 Vue.use(VueRouter);
 
@@ -57,7 +57,7 @@ const routes = [
     },
     {
         path: '/reward',
-        name: 'Reward',
+        name: 'Rewards',
         component: Reward,
     },
 ];

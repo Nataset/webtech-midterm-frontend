@@ -2,7 +2,7 @@
   <div class="mb-4" id="flex-content">
     <img v-bind:src="picURL" class="mt-4" width="250" height="250" />
     <h4 class="mt-3">{{ title }}</h4>
-    <h5 class="mt-1">Price: {{ price }} Bath</h5>
+    <h5 class="mt-1">Point: {{ point }}</h5>
     <div>
       <button type="button" class="btn btn-danger px-5 mb-4">
         &nbsp;&nbsp;&nbsp;&nbsp;REDEEM NOW!!&nbsp;&nbsp;&nbsp;&nbsp;
@@ -15,21 +15,18 @@
 import axios from "axios";
 
 export default {
-  name: "Product",
-  props: ["product", "endPoint"],
+  name: "Reward",
+  props: ["reward", "endPoint"],
   data() {
     return {
       placeholder: "https://via.placeholder.com/250x250",
       title: "",
-      price: "",
+      point: "",
       picURL: "",
     };
   },
   created() {
-    // this.getValidImageUrl(this.picURL).then(
-    //   (result) => (this.validImageUrl = result)
-    // );
-    this.validProductData();
+    this.validRewardData();
   },
   methods: {
     checkImage(url) {
@@ -43,13 +40,11 @@ export default {
       return (await this.checkImage(url)) ? url : this.placeholder;
     },
 
-    async validProductData() {
-      this.title = this.product.name || "PRODUCT TITLE";
-      this.price = this.product.price
-        ? this.product.price.toFixed(2)
-        : "PRODUCT PRICE";
-      this.picURL = this.product.photo
-        ? await this.getValidImageUrl(this.product.photo.formats.small.url)
+    async validRewardData() {
+      this.title = this.reward.name || "reward TITLE";
+      this.point = this.reward.point ? this.reward.point : "REWARD POINT";
+      this.picURL = this.reward.photo
+        ? await this.getValidImageUrl(this.reward.photo.formats.small.url)
         : this.placeholder;
     },
   },

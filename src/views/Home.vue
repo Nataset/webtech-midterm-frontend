@@ -5,7 +5,7 @@
     </div>
     <div class="container" id="flex">
       <product
-        v-for="(product, index) in products"
+        v-for="(product, index) in availableProducts"
         v-bind:key="index"
         :product="product"
         :endPoint="endPoint"
@@ -21,14 +21,15 @@ import ShopStore from "@/store/Shop";
 
 export default {
   name: "Home",
+  components: { Jumbotron, Product },
   data: () => {
     return {
       currentUser: [],
-      products: [],
+      availableProducts: [],
+      allProducts: [],
       endPoint: "",
     };
   },
-  components: { Jumbotron, Product },
   async created() {
     await this.initData();
     console.log(this.currentUser);
@@ -42,7 +43,10 @@ export default {
       this.getEndPoint();
     },
     fetchProductData() {
-      this.products = ShopStore.getters.getProductList;
+      this.allProducts = ShopStore.getters.getProductList;
+      this.allProducts.forEach((product) => {
+        if (product.available) this.availableProducts.push(product);
+      });
     },
     getEndPoint() {
       this.endPoint = ShopStore.getters.getEndPoint;

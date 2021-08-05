@@ -16,6 +16,19 @@
           <label class="ms-3" style="font-family: Raleway">LOGO</label>
         </div>
         <div class="col align-self-center text-end">
+          <label class="me-2 text-danger" v-if="isAuthen()">
+            money:
+            {{
+              currentUser ? currentUser.user.money.toFixed(2) : "Fail to Load"
+            }}
+          </label>
+
+          <label class="me-2 text-danger" v-if="isAuthen()"
+            >point:
+            {{
+              currentUser ? currentUser.user.allPoint : "Fail to Load"
+            }}</label
+          >
           <router-link to="/login" class="me-4" v-if="!isAuthen()"
             ><button
               type="button"
@@ -23,8 +36,8 @@
               style="font-family: Raleway"
             >
               LOGIN
-            </button></router-link
-          >
+            </button>
+          </router-link>
           <router-link to="/logout" class="me-4" v-if="isAuthen()"
             ><button
               type="button"
@@ -32,8 +45,8 @@
               style="font-family: Raleway"
             >
               LOGOUT
-            </button></router-link
-          >
+            </button>
+          </router-link>
           <router-link to="/register" class="me-3" v-if="!isAuthen()"
             ><button
               type="button"
@@ -41,8 +54,8 @@
               style="font-family: Fira Sans"
             >
               REGISTER &nbsp;&nbsp;>
-            </button></router-link
-          >
+            </button>
+          </router-link>
         </div>
       </div>
     </div>
@@ -88,6 +101,14 @@ import "bootstrap";
 import ShopStore from "@/store/Shop";
 
 export default {
+  data() {
+    return {
+      currentUser: [],
+    };
+  },
+  created() {
+    this.currentUser = ShopStore.getters.getCurrentUser;
+  },
   methods: {
     isAuthen() {
       return ShopStore.getters.isAuthen;
