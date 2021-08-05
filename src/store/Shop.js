@@ -113,12 +113,11 @@ export default new Vuex.Store({
                 let url = end_point + '/users/' + id;
                 let body = { money: money };
                 let header = AuthService.getApiHeader();
-                let res = await axios.put(url, body, header);
-                commit('setMoney', res.data);
+                await axios.put(url, body, header);
             } catch (error) {
                 console.log(error);
             }
-            // commit('setCurrentUser', res);
+            commit('setMoney', money);
         },
     },
     modules: {},

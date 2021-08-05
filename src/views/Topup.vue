@@ -30,53 +30,52 @@
 </template>
 
 <script>
-import ShopStore from '@/store/Shop'
+import ShopStore from "@/store/Shop";
 export default {
-    data(){
-        return {
-            form: { amount: 0 },
-            allUser: [],
-            currentUser: [],
-            currentMoney: 0
-        }
+  data() {
+    return {
+      form: { amount: 0 },
+      allUser: [],
+      currentUser: [],
+      currentMoney: 0,
+    };
+  },
+  created() {
+    this.currentUser = ShopStore.getters.getCurrentUser.user;
+    this.currentMoney = this.currentUser.money;
+  },
+  methods: {
+    isAuthen() {
+      return ShopStore.getters.isAuthen;
     },
-    created() {
-        this.currentUser = ShopStore.getters.getCurrentUser.user
-        this.currentMoney = this.currentUser.money
+
+    async addMoney() {
+      // console.log("amount: " + this.form.amount);
+      // console.log("currMoney: " + this.currentMoney);
+      if (this.checkAddValue(this.form.amount)) {
+        let total =
+          parseFloat(this.form.amount) + parseFloat(this.currentMoney);
+        // console.log("total: " + total);
+        let payload = {
+          id: this.currentUser.id,
+          money: total,
+        };
+        this.$swal(
+          "Hehe Adding Success",
+          `Adding ${this.form.amount}`,
+          "success"
+        );
+        await ShopStore.dispatch("addMoney", payload);
+        this.$router.push("/");
+      } else {
+        this.$swal(
+          "Ahh Adding Failed",
+          "Your need to pump more than 0.",
+          "error"
+        );
+      }
     },
-    methods:{
-        isAuthen(){
-            return ShopStore.getters.isAuthen;
-        },
-        
-        async addMoney(){
-            // console.log("amount: " + this.form.amount);
-            // console.log("currMoney: " + this.currentMoney);
-            if(this.checkAddValue(this.form.amount)){
-                let total = parseFloat(this.form.amount) + parseFloat(this.currentMoney)
-                // console.log("total: " + total);
-                let payload = {
-                    id: this.currentUser.id,
-                    money: total
-                }
-                this.$swal("Hehe Adding Success", `Adding ${this.form.amount}`,"success")
-                await ShopStore.dispatch("addMoney", payload)
-                this.$router.push('/')
-            }
-            else{
-                this.$swal("Ahh Adding Failed", "Your need to pump more than 0.","error")
-            }
-        },
-        
-        checkAddValue(money) {
-            if(money > 0)
-                return true;
-            else
-                return false;
-        }
-      });
-      return this.currentMoney;
-    },
+
     checkAddValue(money) {
       if (money > 0) return true;
       else return false;
@@ -94,4 +93,3 @@ export default {
   }
 }
 </style>>
-
