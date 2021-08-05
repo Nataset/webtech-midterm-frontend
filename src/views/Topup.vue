@@ -1,7 +1,7 @@
 <template>
   <div class="topup-container">
     <div v-if="isAuthen()">
-      <h2>Your Total Value : {{ getCurrentMoney() }}</h2>
+      <h2>Your Total Value : {{ currentUser.money }}</h2>
       <h3>Pumping Your Money</h3>
       <form @submit.prevent="addMoney">
         <div>
@@ -30,63 +30,49 @@
 </template>
 
 <script>
-import AuthService from "@/services/AuthService";
-import ShopStore from "@/store/Shop";
+import ShopStore from '@/store/Shop'
 export default {
-  data() {
-    return {
-      form: { amount: 0 },
-      allUser: [],
-      currentUser: ShopStore.get,
-      currentMoney: 0,
-    };
-  },
-  created() {
-    this.fetchAllUser();
-  },
-  methods: {
-    isAuthen() {
-      return ShopStore.getters.isAuthen;
+    data(){
+        return {
+            form: { amount: 0 },
+            allUser: [],
+            currentUser: [],
+            currentMoney: 0
+        }
     },
-
-    async addMoney() {
-      // console.log("amount: " + this.form.amount);
-      // console.log("currMoney: " + this.currentMoney);
-      if (this.checkAddValue(this.form.amount)) {
-        let total =
-          parseFloat(this.form.amount) + parseFloat(this.currentMoney);
-        // console.log("total: " + total);
-        let payload = {
-          id: this.currentUser.user.id,
-          money: total,
-        };
-        this.$swal(
-          "Hehe Adding Success",
-          `Adding ${this.form.amount}`,
-          "success"
-        );
-        await ShopStore.dispatch("addMoney", payload);
-        this.$router.push("/");
-      } else {
-        this.$swal(
-          "Ahh Adding Failed",
-          "Your need to pump more than 0.",
-          "error"
-        );
-      }
+    created() {
+        this.currentUser = ShopStore.getters.getCurrentUser.user
+        this.currentMoney = this.currentUser.money
     },
-    async fetchAllUser() {
-      await ShopStore.dispatch("fetchAllUser");
-      this.allUser = ShopStore.getters.getAllUser;
-      this.currentUser = ShopStore.getters.getCurrentUser;
-    },
-    getCurrentMoney() {
-      this.allUser.forEach((e) => {
-        // console.log(e.id+" money: "+e.money);
-        if (e.id === this.currentUser.id) {
-          // console.log(this.currentUser.id);
-          this.currentMoney = e.money;
-          // console.log(this.currentMoney);
+    methods:{
+        isAuthen(){
+            return ShopStore.getters.isAuthen;
+        },
+        
+        async addMoney(){
+            // console.log("amount: " + this.form.amount);
+            // console.log("currMoney: " + this.currentMoney);
+            if(this.checkAddValue(this.form.amount)){
+                let total = parseFloat(this.form.amount) + parseFloat(this.currentMoney)
+                // console.log("total: " + total);
+                let payload = {
+                    id: this.currentUser.id,
+                    money: total
+                }
+                this.$swal("Hehe Adding Success", `Adding ${this.form.amount}`,"success")
+                await ShopStore.dispatch("addMoney", payload)
+                this.$router.push('/')
+            }
+            else{
+                this.$swal("Ahh Adding Failed", "Your need to pump more than 0.","error")
+            }
+        },
+        
+        checkAddValue(money) {
+            if(money > 0)
+                return true;
+            else
+                return false;
         }
       });
       return this.currentMoney;

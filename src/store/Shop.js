@@ -53,11 +53,9 @@ export default new Vuex.Store({
                 (state.currentUser.isAuthen = false);
             console.log(state.currentUser);
         },
-        setMoney(state, user) {
-            console.log(user);
-            console.log('before', state.currentUser);
-            state.currentUser.user = user;
-            console.log('after', state.currentUser);
+        setMoney(state, money) {
+            state.currentUser.user.money = money;
+            // console.log(money);
         },
     },
     actions: {
