@@ -54,9 +54,14 @@ export default new Vuex.Store({
             console.log(state.currentUser);
         },
         setMoney(state, money) {
-            state.currentUser.money = money;
-            // console.log(money);
+            state.currentUser.user.money = money;
+            console.log(currentUser);
         },
+        updateUser(state, user){
+            // console.log(state.currentUser.user);
+            state.currentUser.user = user;
+            // console.log(state.currentUser.user);
+        }
     },
     actions: {
         async fetchAllUser({ commit }) {
@@ -119,6 +124,11 @@ export default new Vuex.Store({
             }
             commit('setMoney', money);
         },
+        async fetchCurrentUser({commit}){
+            let res = await AuthService.fetchUser()
+            // console.log(res);
+            commit('updateUser',res)
+        }
     },
     modules: {},
 });

@@ -100,6 +100,14 @@ export default {
     logout(){
         localStorage.removeItem(auth_key)
     },
+
+    async fetchUser(){
+        let id = user.id
+        let url = api_endpoint + '/users/' + id;
+        let header = this.getApiHeader()
+        let res = await Axios.get(url,header)
+        return res.data
+    }
 }
 
 // export const 

@@ -113,6 +113,9 @@ export default {
     isAuthen() {
       return ShopStore.getters.isAuthen;
     },
+    setNewCurrentUser(){
+      this.currentUser = ShopStore.getters.getCurrentUser;
+    }
   },
   name: "Navbar",
 };

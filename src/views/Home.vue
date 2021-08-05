@@ -32,12 +32,15 @@ export default {
   },
   async created() {
     await this.initData();
-    console.log(this.currentUser);
+    // console.log(this.currentUser);
   },
   methods: {
     async initData() {
       await ShopStore.dispatch("fetchAllproduct");
       await ShopStore.dispatch("fetchAllreward");
+      if (this.isAuthen() === true) {
+        await ShopStore.dispatch("fetchCurrentUser")
+      }
       this.fetchProductData();
       this.getCurrent();
       this.getEndPoint();
@@ -53,6 +56,9 @@ export default {
     },
     getCurrent() {
       this.currentUser = ShopStore.getters.getCurrentUser;
+    },     
+    isAuthen() {
+      return ShopStore.getters.isAuthen;
     },
   },
 };

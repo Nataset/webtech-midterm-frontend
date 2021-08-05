@@ -4,7 +4,7 @@
     <h4 class="mt-3">{{ title }}</h4>
     <h5 class="mt-1">Price: {{ price }} Bath</h5>
     <div>
-      <button type="button" class="btn btn-danger px-5 mb-4">
+      <button type="button" class="btn btn-danger px-5 mb-4" @click="buyProduct">
         &nbsp;&nbsp;&nbsp;&nbsp;BUY NOW!!&nbsp;&nbsp;&nbsp;&nbsp;
       </button>
     </div>
@@ -13,6 +13,8 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
+import ShopStore from "@/store/Shop";
 
 export default {
   name: "Product",
@@ -23,10 +25,29 @@ export default {
       title: "",
       price: "",
       picURL: "",
+      currentUser:'',
+      purchaseFrom:{
+        user:"",
+        product:"",
+        time:""
+      },
+      pointFrom:{
+        type:"",
+        amount:'',
+        purchase:'',
+        user:''
+      },
+      updatePointFrom:{
+        point_object:""
+      },
+      updateUserAllPoint:{
+        allPoint:0
+      }
     };
   },
   created() {
     this.validProductData();
+    this.fetchCurrentUserdata()
   },
   methods: {
     checkImage(url) {
@@ -49,6 +70,37 @@ export default {
         ? await this.getValidImageUrl(this.product.photo.formats.small.url)
         : this.placeholder;
     },
+    fetchCurrentUserdata(){
+      this.currentUser = (ShopStore.getters.getCurrentUser)
+    },
+    buyProduct(){
+      // console.log(this.product)
+      // console.log(this.currentUser.user.id)
+      // console.log(moment().format())
+      this.setPurchaseFrom()
+      this.setPointFrom()
+      this.setUpdateUserAllPoint()
+    },
+    setPurchaseFrom(){
+      this.purchaseFrom.product = this.product.id
+      this.purchaseFrom.user = this.currentUser.user.id
+      this.purchaseFrom.time = moment().format()
+      console.log(this.purchaseFrom);
+    },
+    setPointFrom(){
+      this.pointFrom.type = "RECEIVE"
+      this.pointFrom.amount = this.product.point
+      this.pointFrom.purchase = 0
+      this.pointFrom.user = this.currentUser.user.id
+      console.log(this.pointFrom);
+    },
+    setUpdateUserAllPoint(){
+      this.updateUserAllPoint.allPoint = parseInt(this.currentUser.user.allPoint) + parseInt(this.product.point)
+      console.log(this.updateUserAllPoint.allPoint);
+    },
+    setUpdatePointFrom(point_id){
+      this.updatePointFrom.point_object = point_id
+    }
   },
 };
 </script>
