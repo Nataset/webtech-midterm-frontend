@@ -9,7 +9,6 @@
 
 <script>
 import ShopStore from '@/store/Shop'
-import AuthService from '@/services/AuthService.js'
 import ScoreBoard from '@/components/ScoreBoard.vue'
 
 export default {

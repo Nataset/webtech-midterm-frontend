@@ -1,7 +1,7 @@
 <template>
   <div class="topup-container">
     <div v-if="isAuthen()">
-        <h2>Your Total Value : {{ getCurrentMoney() }}</h2>
+        <h2>Your Total Value : {{ currentUser.money }}</h2>
         <h3>Pumping Your Money</h3>
         <form @submit.prevent="addMoney">
             <div>
@@ -28,19 +28,19 @@
 </template>
 
 <script>
-import AuthService from '@/services/AuthService'
 import ShopStore from '@/store/Shop'
 export default {
     data(){
         return {
             form: { amount: 0 },
             allUser: [],
-            currentUser: AuthService.getUser(),
+            currentUser: [],
             currentMoney: 0
         }
     },
     created() {
-        this.fetchAllUser()
+        this.currentUser = ShopStore.getters.getCurrentUser.user
+        this.currentMoney = this.currentUser.money
     },
     methods:{
         isAuthen(){
@@ -65,21 +65,7 @@ export default {
                 this.$swal("Ahh Adding Failed", "Your need to pump more than 0.","error")
             }
         },
-        async fetchAllUser() {
-            await ShopStore.dispatch("fetchAllUser");
-            this.allUser = ShopStore.getters.getAllUser;
-        },
-        getCurrentMoney() {
-            this.allUser.forEach(e => { 
-                // console.log(e.id+" money: "+e.money);
-                if(e.id === this.currentUser.id){
-                    // console.log(this.currentUser.id);
-                    this.currentMoney = e.money
-                    // console.log(this.currentMoney);
-                }
-            });
-            return this.currentMoney;
-        },
+        
         checkAddValue(money) {
             if(money > 0)
                 return true;

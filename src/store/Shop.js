@@ -54,7 +54,7 @@ export default new Vuex.Store({
             console.log(state.currentUser);
         },
         setMoney(state, money) {
-            state.currentUser.money = money;
+            state.currentUser.user.money = money;
             // console.log(money);
         },
     },
