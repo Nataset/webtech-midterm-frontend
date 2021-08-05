@@ -1,68 +1,66 @@
-import Axios from "axios"
+import Axios from 'axios';
 
-const auth_key = "auth-shop"
-let auth = JSON.parse(localStorage.getItem(auth_key))
-const user = auth ? auth.user : ""
-const jwt = auth ? auth.jwt : ""
-const api_endpoint = process.env.VUE_APP_SHOP_ENDPOINT || 'http://localhost:1337'
-
+const auth_key = 'auth-shop';
+let auth = JSON.parse(localStorage.getItem(auth_key));
+const user = auth ? auth.user : '';
+const jwt = auth ? auth.jwt : '';
+const api_endpoint = process.env.VUE_APP_SHOP_ENDPOINT || 'http://localhost:1337';
 
 export default {
-    isAuthen(){
-        return (user !== "") && (jwt !== "")
+    isAuthen() {
+        return user !== '' && jwt !== '';
     },
-    getApiHeader(){
-        if(jwt !== ""){
-            return{
-                headers:{
-                    Authorization: `Bearer ${jwt}`
-                }
-            }      
+    getApiHeader() {
+        if (jwt !== '') {
+            return {
+                headers: {
+                    Authorization: `Bearer ${jwt}`,
+                },
+            };
         }
-        return {}  
+        return {};
     },
-    getUser(){
-        return user
+    getUser() {
+        return user;
     },
 
-    getJwt(){
-        return jwt
+    getJwt() {
+        return jwt;
     },
-    async login({ username, password }){
+    async login({ username, password }) {
         try {
-            let url = api_endpoint + "/auth/local"
+            let url = api_endpoint + '/auth/local';
             let body = {
                 identifier: username,
-                password: password
-            }
-            let res = await Axios.post(url, body)
-            if(res.status === 200){
+                password: password,
+            };
+            let res = await Axios.post(url, body);
+            if (res.status === 200) {
                 // console.log(res.data);
-                localStorage.setItem(auth_key, JSON.stringify(res.data))
+                localStorage.setItem(auth_key, JSON.stringify(res.data));
                 return {
                     success: true,
                     user: res.data.user,
-                    jwt: res.data.jwt
-                }
-            }else{
-                console.log("NOT 200", res);
+                    jwt: res.data.jwt,
+                };
+            } else {
+                console.log('NOT 200', res);
             }
-            
         } catch (e) {
             console.error(e);
-            if(e.response.status === 400){
+            if (e.response.status === 400) {
                 // console.log(e.response.data.message[0].messages[0].message);
                 return {
                     success: false,
-                    message: e.response.data.message[0].messages[0].message
-                }
+                    message: e.response.data.message[0].messages[0].message,
+                };
             }
         }
     },
 
-    async register({ username, email, password ,firstname, lastname, address, money, allPoint}){
+    async register({ username, email, password, firstname, lastname, address, money, allPoint }) {
         try {
-            let url = `${api_endpoint}/auth/local/register`
+            let url = `${api_endpoint}/auth/local/register`;
             let body = {
                 username: username,
                 email: email,
@@ -72,34 +70,41 @@ export default {
                 address: address,
                 money: money,
                 allPoint: allPoint,
-            }
-            let res = await Axios.post(url, body)
-            if(res.status === 200){
-                localStorage.setItem(auth_key, JSON.stringify(res.data))
+            };
+            let res = await Axios.post(url, body);
+            if (res.status === 200) {
+                localStorage.setItem(auth_key, JSON.stringify(res.data));
                 return {
                     success: true,
                     user: res.data.user,
-                    jwt: res.data.jwt
-                }
-            }else{
-                console.log("NOT 200", res);
+                    jwt: res.data.jwt,
+                };
+            } else {
+                console.log('NOT 200', res);
             }
         } catch (e) {
-            if(e.response.status === 400){
+            if (e.response.status === 400) {
                 // console.log(e.response.data.message[0].messages[0].message);
                 return {
                     success: false,
-                    message: e.response.data.message[0].messages[0].message
-                }
+                    message: e.response.data.message[0].messages[0].message,
+                };
             } else {
-                return
+                return;
             }
         }
     },
 
-    logout(){
-        localStorage.removeItem(auth_key)
+    logout() {
+        localStorage.removeItem(auth_key);
     },
-}
 
-// export const 
+    async fetchUser() {
+        let url = api_endpoint + '/users/me';
+        let header = this.getApiHeader();
+        let res = await Axios.get(url, header);
+        return res.data;
+    },
+};
+
+// export const
