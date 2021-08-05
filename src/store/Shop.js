@@ -53,9 +53,11 @@ export default new Vuex.Store({
                 (state.currentUser.isAuthen = false);
             console.log(state.currentUser);
         },
-        setMoney(state, money) {
-            state.currentUser.money = money;
-            // console.log(money);
+        setMoney(state, user) {
+            console.log(user);
+            console.log('before', state.currentUser);
+            state.currentUser.user = user;
+            console.log('after', state.currentUser);
         },
     },
     actions: {
@@ -113,11 +115,12 @@ export default new Vuex.Store({
                 let url = end_point + '/users/' + id;
                 let body = { money: money };
                 let header = AuthService.getApiHeader();
-                await axios.put(url, body, header);
+                let res = await axios.put(url, body, header);
+                commit('setMoney', res.data);
             } catch (error) {
                 console.log(error);
             }
-            commit('setMoney', money);
+            // commit('setCurrentUser', res);
         },
     },
     modules: {},
