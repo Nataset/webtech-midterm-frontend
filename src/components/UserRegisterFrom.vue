@@ -54,7 +54,7 @@ export default {
                 firstname:'',
                 lastname:'',
                 money:0,
-                Allpoint:0,
+                allpoint:0,
             }
         }
     },
