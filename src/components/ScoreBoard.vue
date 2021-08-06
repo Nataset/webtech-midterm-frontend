@@ -2,9 +2,10 @@
     <div class="scoreboard">
         <ol>
             <div class="title">
-                <h3 >Highest user point</h3>
+                <h3 >Highest Point</h3>
             </div>
             <li v-for="(user, index) in findTopList()" :key="index">
+                <img class="crown" v-if="index===0" src="https://image.flaticon.com/icons/png/512/1198/1198990.png" alt="crown-icon">
                 <p class="username">{{ user.username }}</p>
                 <p class="point">{{ user.point }} Point</p>
             </li>
@@ -13,6 +14,7 @@
 </template>
 
 <script>
+
 export default {
     props: {
         data: Array
@@ -56,6 +58,8 @@ $clr-red: hsl(358, 84%, 55%);
             h3 {
                 transform: translateY(25%);
                 color: white;
+                font-weight: 700;
+                text-transform: uppercase;
             }
             &:after {
                 position: absolute;
@@ -95,7 +99,7 @@ $clr-red: hsl(358, 84%, 55%);
                 content: counter(scoreboard);
                 position: absolute;
                 top: 10px;
-                left: 30px;
+                left: 50px;
                 width: 30px;
                 height: 30px;
                 line-height: 30px;
@@ -129,10 +133,39 @@ $clr-red: hsl(358, 84%, 55%);
                 transform: scaleX(1.08) scaleY(1.03);
                 transition: .2s ease-in-out;
                 border-radius: 0;
+                background-color: black;
             }
         }
     }
+    .crown {
+        box-sizing: border-box;
+        position: absolute;
+        top: 15%;
+        left: 2%;
+        width: 32px;
+        height: 32px;
+        animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+        animation-iteration-count: infinite;
+        animation-duration: 2s;
+        animation-delay: 0s;
+        animation-timing-function: linear ;
+    }
+    @keyframes shake {
+        5%, 45% {
+            transform: translate3d(-1px, 0, 0);
+        }
+        10%, 40% {
+            transform: translate3d(2px, 0, 0);
+        }
+        15%, 25%, 35% {
+            transform: translate3d(-4px, 0, 0);
+        }
+        20%, 30% {
+            transform: translate3d(4px, 0, 0);
+        }
+    }
 }
+ 
 
 
     

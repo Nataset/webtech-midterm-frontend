@@ -89,7 +89,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 .topup-container {
   h2, h3 {
         margin: .5em;
@@ -171,6 +175,11 @@ export default {
           }
           input {
               text-align: right;
+              &::-webkit-outer-spin-button,
+              &::-webkit-inner-spin-button {
+                -webkit-appearance: none;
+                margin-right: 1em;
+              }
           }
       }
       button {

@@ -1,7 +1,6 @@
 <template>
     <div class="main-container">
         <div class="title">Leaderboard</div>
-        <!-- User view -->
         <form @submit.prevent="getSelectedData">
             <div class="date-selector">
                 <div>
@@ -107,7 +106,7 @@ $clr-red: hsl(358, 84%, 55%);
 *,
 *::before,
 *::after {
-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .main-container{
