@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
 import AuthService from '@/services/AuthService';
+import PurchaseProduct from '../services/PurchaseProduct';
 
 const end_point = process.env.SHOP_VUE_APP_SHOP_ENDPOINT || 'http://localhost:1337';
 
@@ -23,6 +24,9 @@ export default new Vuex.Store({
         product: [],
         reward: [],
         point: [],
+        newPoint: '',
+        newPurchase: '',
+        newRedeem: '',
     },
     getters: {
         getAllUser: state => state.allUser,
@@ -31,6 +35,9 @@ export default new Vuex.Store({
         getRewardList: state => state.reward,
         getEndPoint: state => state.endPoint,
         isAuthen: state => state.currentUser.isAuthen,
+        getNewPoint: state => state.newPoint,
+        getNewPurchase: state => state.newPurchase,
+        getNewRedeem: state => state.newRedeem,
     },
     mutations: {
         fetchAllUser(state, { res }) {
@@ -51,16 +58,27 @@ export default new Vuex.Store({
             (state.currentUser.user = ''),
                 (state.currentUser.jwt = ''),
                 (state.currentUser.isAuthen = false);
-            console.log(state.currentUser);
+            // console.log(state.currentUser);
         },
         setMoney(state, money) {
             state.currentUser.user.money = money;
             // console.log(money);
+            // console.log(currentUser);
         },
         updateUser(state, user) {
             // console.log(state.currentUser.user);
             state.currentUser.user = user;
             // console.log(state.currentUser.user);
+        },
+        setNewPoint(state, newPoint) {
+            state.newPoint = newPoint;
+        },
+        setNewPurchase(state, newPurchase) {
+            state.newPurchase = newPurchase;
+            // console.log(state.newPurchase);
+        },
+        setNewRedeem(state, newRedeem) {
+            state.newRedeem = newRedeem;
         },
     },
     actions: {
@@ -80,7 +98,7 @@ export default new Vuex.Store({
             commit('fetchReward', { res });
         },
         setCurrentUser({ commit }, payload) {
-            console.log(payload);
+            // console.log(payload);
             commit('setCurrentUser', payload);
         },
         async login({ commit }, { username, password }) {
@@ -128,6 +146,29 @@ export default new Vuex.Store({
             let res = await AuthService.fetchUser();
             // console.log(res);
             commit('updateUser', res);
+        },
+        async createPurchase({ commit }, { user, product, time }) {
+            let res = await PurchaseProduct.createPurchase({ user, product, time });
+            commit('setNewPurchase', res);
+            return res;
+        },
+        async createPoint({ commit }, { type, amount, purchase, user }) {
+            let res = await PurchaseProduct.createPoint({ type, amount, purchase, user });
+            commit('setNewPoint', res);
+            return res;
+        },
+        async updatePointAndMoneyToUser({ commit }, { allPoint, money, id }) {
+            // console.log(id);
+            let res = await PurchaseProduct.updatePointAndMoneyToUser({ allPoint, money, id });
+            // console.log(res);
+            // console.log(res.user);
+            commit('setCurrentUser', res.user);
+            return res;
+        },
+        async createRedeem({ commit }, { user, reward, time }) {
+            let res = await PurchaseProduct.createRedeem({ user, reward, time });
+            commit('setNewRedeem', res);
+            return res;
         },
     },
     modules: {},

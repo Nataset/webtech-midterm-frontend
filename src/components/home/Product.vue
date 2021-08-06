@@ -37,12 +37,13 @@ export default {
         purchase:'',
         user:''
       },
-      updatePointFrom:{
-        point_object:""
-      },
       updateUserAllPoint:{
-        allPoint:0
-      }
+        id:0,
+        allPoint:0,
+        money:0
+      },
+      newPurchase:"",
+      newPoint:""
     };
   },
   created() {
@@ -73,33 +74,85 @@ export default {
     fetchCurrentUserdata(){
       this.currentUser = (ShopStore.getters.getCurrentUser)
     },
-    buyProduct(){
-      // console.log(this.product)
-      // console.log(this.currentUser.user.id)
-      // console.log(moment().format())
-      this.setPurchaseFrom()
-      this.setPointFrom()
-      this.setUpdateUserAllPoint()
+    async buyProduct(){
+      swal({
+        title: "Are you sure?",
+        text: "Please check your money",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willBuy)=>{
+        if(willBuy){
+          if (this.isAuthen() === false) {
+            this.$swal(
+            "You are not logged in.",
+            "Please login and go to this page again",
+            "error",
+            );
+           this.$router.push("/login");
+          }
+          else if(this.currentUser.user.money < this.product.price){
+            this.$swal(
+              "Your money is not enough to buy",
+              "Please topup and buy again",
+              "error"
+             );
+          }
+          else{
+             this.purchaseProduct();
+          }
+        }
+        else{
+
+        }
+      })
+      
     },
     setPurchaseFrom(){
       this.purchaseFrom.product = this.product.id
       this.purchaseFrom.user = this.currentUser.user.id
       this.purchaseFrom.time = moment().format()
-      console.log(this.purchaseFrom);
+      // console.log(this.purchaseFrom);
     },
     setPointFrom(){
       this.pointFrom.type = "RECEIVE"
       this.pointFrom.amount = this.product.point
-      this.pointFrom.purchase = 0
+      this.pointFrom.purchase = this.newPurchase.purchase.id
       this.pointFrom.user = this.currentUser.user.id
-      console.log(this.pointFrom);
+      // console.log(this.pointFrom);
     },
     setUpdateUserAllPoint(){
+      this.updateUserAllPoint.id = this.currentUser.user.id
       this.updateUserAllPoint.allPoint = parseInt(this.currentUser.user.allPoint) + parseInt(this.product.point)
-      console.log(this.updateUserAllPoint.allPoint);
+      // console.log(this.updateUserAllPoint.allPoint);
+      this.updateUserAllPoint.money = parseInt(this.currentUser.user.money) - parseInt(this.product.price)
     },
-    setUpdatePointFrom(point_id){
-      this.updatePointFrom.point_object = point_id
+    isAuthen() {
+      return ShopStore.getters.isAuthen;
+    },
+    async purchaseProduct(){
+      this.setPurchaseFrom()
+            let res = await ShopStore.dispatch('createPurchase',this.purchaseFrom)
+            // console.log(res);
+            this.newPurchase = ShopStore.getters.getNewPurchase
+            // console.log(this.newPurchase);
+            if(res.success){
+              this.setPointFrom()
+              // console.log(this.pointFrom);
+              let res2 = await ShopStore.dispatch('createPoint',this.pointFrom)
+              // console.log(res2);
+              if(res2.success){
+                this.newPoint = ShopStore.getters.getNewPoint
+                this.setUpdateUserAllPoint()
+                // console.log(this.setUpdateUserAllPoint);
+                let res3 = await ShopStore.dispatch('updatePointAndMoneyToUser',this.updateUserAllPoint)
+                console.log(res3.success);
+                if(res3.success){
+                this.$swal("Purchases Success",`${this.currentUser.user.username} purchase ${this.product.name}.`,"success")
+                }
+              }
+            }
     }
   },
 };
