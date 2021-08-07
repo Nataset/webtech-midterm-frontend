@@ -137,10 +137,11 @@ export default {
     // console.log(this.allReward);
   },
   methods: {
-    fetchAllData() {
+    async fetchAllData() {
       this.currentUser = JSON.parse(
         JSON.stringify(ShopStore.getters.getCurrentUser)
       );
+      console.log(this.currentUser);
       this.allProduct = ShopStore.getters.getProductList;
       this.allReward = ShopStore.getters.getRewardList;
     },
@@ -198,8 +199,9 @@ export default {
   grid-template-columns: repeat(2, 1fr);
   margin: 1em auto;
   width: 1000px;
-  h2, h3 {
-    margin: .5em;
+  h2,
+  h3 {
+    margin: 0.5em;
     text-align: center;
   }
   .table-container {
@@ -210,63 +212,58 @@ export default {
     display: table;
     padding: 0 0 8em 0;
     border-radius: 10px;
-    td, th {
+    td,
+    th {
       padding-bottom: 2%;
       padding-top: 2%;
-      padding-left:2%;  
+      padding-left: 2%;
     }
     th {
-        background-color: #1F2739;
-        font-weight: bold;
-        font-size: 1em;
-        text-align: left;
-        color: hsl(182, 70%, 65%);
+      background-color: #1f2739;
+      font-weight: bold;
+      font-size: 1em;
+      text-align: left;
+      color: hsl(182, 70%, 65%);
     }
     tr:nth-child(odd) {
-      background-color: #323C50;
+      background-color: #323c50;
     }
     tr:nth-child(even) {
-      background-color: #2C3446;
+      background-color: #2c3446;
     }
-    td:first-child { 
-      color: #FB667A;
+    td:first-child {
+      color: #fb667a;
       min-width: 20px;
     }
-    th{
+    th {
       text-align: center;
     }
     tr {
       &:hover {
-        background-color: #464A52;
+        background-color: #464a52;
         z-index: -1;
       }
     }
     td {
       color: white;
-      padding-right: .5em;
+      padding-right: 0.5em;
       &:hover {
         cursor: pointer;
         background-color: yellow;
         color: black;
         font-weight: 700;
-        box-shadow: 
-          #7f7c21 -1px 1px, 
-          #7f7c21 -2px 2px, 
-          #7f7c21 -3px 3px, 
-          #7f7c21 -4px 4px, 
-          #7f7c21 -5px 5px, 
-          #7f7c21 -6px 6px;
+        box-shadow: #7f7c21 -1px 1px, #7f7c21 -2px 2px, #7f7c21 -3px 3px,
+          #7f7c21 -4px 4px, #7f7c21 -5px 5px, #7f7c21 -6px 6px;
         transform: translate3d(5px, -5px, 0);
-        transition: .3s ease-out;
+        transition: 0.3s ease-out;
       }
     }
-    
   }
   .user {
     width: fit-content;
     min-width: 300px;
     td {
-      padding: .5em 1em;
+      padding: 0.5em 1em;
       &:first-child {
         width: 100px;
       }
@@ -275,25 +272,26 @@ export default {
   .point {
     width: 90%;
     td {
-      &:nth-child(2), &:nth-child(3){
+      &:nth-child(2),
+      &:nth-child(3) {
         text-align: center;
       }
       &:last-child {
         text-align: right;
         padding-right: 1em;
       }
-    }  
+    }
   }
   .purchase {
     width: 95%;
     td {
-      padding-right: .5em;
+      padding-right: 0.5em;
       &:first-child {
         min-width: 25px;
       }
       &:nth-child(3) {
         text-align: right;
-        padding-right: .5em;
+        padding-right: 0.5em;
       }
       &:last-child {
         text-align: center;
@@ -302,14 +300,13 @@ export default {
   }
   .reward {
     width: 95%;
-     td {
-       
-        &:nth-child(3) {
-          text-align: right;
-        }
-        &:last-child {
-          text-align: center;
-        }
+    td {
+      &:nth-child(3) {
+        text-align: right;
+      }
+      &:last-child {
+        text-align: center;
+      }
     }
   }
   .title {
@@ -317,20 +314,12 @@ export default {
     font-weight: bold;
     font-family: Helvetica;
     text-transform: uppercase;
-    margin: .5em;
-    text-shadow: 
-        0 1px 0 #ccc, 
-        0 2px 0 #c9c9c9, 
-        0 3px 0 #bbb, 
-        0 4px 0 #b9b9b9, 
-        0 5px 0 #aaa, 
-        0 6px 1px rgba(0,0,0,.1), 
-        0 0 5px rgba(0,0,0,.1), 
-        0 1px 3px rgba(0,0,0,.3), 
-        0 3px 5px rgba(0,0,0,.2), 
-        0 5px 10px rgba(0,0,0,.25), 
-        0 10px 10px rgba(0,0,0,.2), 
-        0 20px 20px rgba(0,0,0,.15);
-  }  
+    margin: 0.5em;
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9,
+      0 5px 0 #aaa, 0 6px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(0, 0, 0, 0.1),
+      0 1px 3px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.2),
+      0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.2),
+      0 20px 20px rgba(0, 0, 0, 0.15);
+  }
 }
 </style>>

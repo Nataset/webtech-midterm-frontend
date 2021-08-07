@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <navbar></navbar>
-    <router-view />
+    <router-view id="minHeight" />
     <footer-bar></footer-bar>
   </div>
 </template>
@@ -31,5 +31,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+}
+
+#minHeight {
+  min-height: 940px;
 }
 </style>

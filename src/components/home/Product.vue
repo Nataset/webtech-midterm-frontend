@@ -4,7 +4,11 @@
     <h4 class="mt-3">{{ title }}</h4>
     <h5 class="mt-1">Price: {{ price }} Bath</h5>
     <div>
-      <button type="button" class="btn btn-danger px-5 mb-4" @click="buyProduct">
+      <button
+        type="button"
+        class="btn btn-danger px-5 mb-4"
+        @click="buyProduct"
+      >
         &nbsp;&nbsp;&nbsp;&nbsp;BUY NOW!!&nbsp;&nbsp;&nbsp;&nbsp;
       </button>
     </div>
@@ -25,30 +29,30 @@ export default {
       title: "",
       price: "",
       picURL: "",
-      currentUser:'',
-      purchaseFrom:{
-        user:"",
-        product:"",
-        time:""
+      currentUser: "",
+      purchaseFrom: {
+        user: "",
+        product: "",
+        time: "",
       },
-      pointFrom:{
-        type:"",
-        amount:'',
-        purchase:'',
-        user:''
+      pointFrom: {
+        type: "",
+        amount: "",
+        purchase: "",
+        user: "",
       },
-      updateUserAllPoint:{
-        id:0,
-        allPoint:0,
-        money:0
+      updateUserAllPoint: {
+        id: 0,
+        allPoint: 0,
+        money: 0,
       },
-      newPurchase:"",
-      newPoint:""
+      newPurchase: "",
+      newPoint: "",
     };
   },
   created() {
     this.validProductData();
-    this.fetchCurrentUserdata()
+    this.fetchCurrentUserdata();
   },
   methods: {
     checkImage(url) {
@@ -71,89 +75,97 @@ export default {
         ? await this.getValidImageUrl(this.product.photo.formats.small.url)
         : this.placeholder;
     },
-    fetchCurrentUserdata(){
-      this.currentUser = (ShopStore.getters.getCurrentUser)
+    fetchCurrentUserdata() {
+      this.currentUser = ShopStore.getters.getCurrentUser;
     },
-    async buyProduct(){
+    async buyProduct() {
       swal({
         title: "Are you sure?",
         text: "Please check your money",
         icon: "warning",
         buttons: true,
         dangerMode: true,
-      })
-      .then((willBuy)=>{
-        if(willBuy){
+      }).then((willBuy) => {
+        if (willBuy) {
           if (this.isAuthen() === false) {
             this.$swal(
-            "You are not logged in.",
-            "Please login and go to this page again",
-            "error",
+              "You are not logged in.",
+              "Please login and go to this page again",
+              "error"
             );
-           this.$router.push("/login");
-          }
-          else if(this.currentUser.user.money < this.product.price){
+            this.$router.push("/login");
+          } else if (this.isAdmin() === true) {
+            this.$swal("You are admin.", "You can't buy shit.", "error");
+          } else if (this.currentUser.user.money < this.product.price) {
             this.$swal(
               "Your money is not enough to buy",
               "Please topup and buy again",
               "error"
-             );
+            );
+          } else {
+            this.purchaseProduct();
           }
-          else{
-             this.purchaseProduct();
-          }
+        } else {
         }
-        else{
-
-        }
-      })
-      
+      });
     },
-    setPurchaseFrom(){
-      this.purchaseFrom.product = this.product.id
-      this.purchaseFrom.user = this.currentUser.user.id
-      this.purchaseFrom.time = moment().format()
+    setPurchaseFrom() {
+      this.purchaseFrom.product = this.product.id;
+      this.purchaseFrom.user = this.currentUser.user.id;
+      this.purchaseFrom.time = moment().format();
       // console.log(this.purchaseFrom);
     },
-    setPointFrom(){
-      this.pointFrom.type = "RECEIVE"
-      this.pointFrom.amount = this.product.point
-      this.pointFrom.purchase = this.newPurchase.purchase.id
-      this.pointFrom.user = this.currentUser.user.id
+    setPointFrom() {
+      this.pointFrom.type = "RECEIVE";
+      this.pointFrom.amount = this.product.point;
+      this.pointFrom.purchase = this.newPurchase.purchase.id;
+      this.pointFrom.user = this.currentUser.user.id;
       // console.log(this.pointFrom);
     },
-    setUpdateUserAllPoint(){
-      this.updateUserAllPoint.id = this.currentUser.user.id
-      this.updateUserAllPoint.allPoint = parseInt(this.currentUser.user.allPoint) + parseInt(this.product.point)
+    setUpdateUserAllPoint() {
+      this.updateUserAllPoint.id = this.currentUser.user.id;
+      this.updateUserAllPoint.allPoint =
+        parseInt(this.currentUser.user.allPoint) + parseInt(this.product.point);
       // console.log(this.updateUserAllPoint.allPoint);
-      this.updateUserAllPoint.money = parseInt(this.currentUser.user.money) - parseInt(this.product.price)
+      this.updateUserAllPoint.money =
+        parseInt(this.currentUser.user.money) - parseInt(this.product.price);
     },
     isAuthen() {
       return ShopStore.getters.isAuthen;
     },
-    async purchaseProduct(){
-      this.setPurchaseFrom()
-            let res = await ShopStore.dispatch('createPurchase',this.purchaseFrom)
-            // console.log(res);
-            this.newPurchase = ShopStore.getters.getNewPurchase
-            // console.log(this.newPurchase);
-            if(res.success){
-              this.setPointFrom()
-              // console.log(this.pointFrom);
-              let res2 = await ShopStore.dispatch('createPoint',this.pointFrom)
-              // console.log(res2);
-              if(res2.success){
-                this.newPoint = ShopStore.getters.getNewPoint
-                this.setUpdateUserAllPoint()
-                // console.log(this.setUpdateUserAllPoint);
-                let res3 = await ShopStore.dispatch('updatePointAndMoneyToUser',this.updateUserAllPoint)
-                console.log(res3.success);
-                if(res3.success){
-                this.$swal("Purchases Success",`${this.currentUser.user.username} purchase ${this.product.name}.`,"success")
-                }
-              }
-            }
-    }
+    isAdmin() {
+      return ShopStore.getters.isAuthen ? ShopStore.getters.isAdmin : false;
+    },
+    async purchaseProduct() {
+      this.setPurchaseFrom();
+      let res = await ShopStore.dispatch("createPurchase", this.purchaseFrom);
+      // console.log(res);
+      this.newPurchase = ShopStore.getters.getNewPurchase;
+      // console.log(this.newPurchase);
+      if (res.success) {
+        this.setPointFrom();
+        // console.log(this.pointFrom);
+        let res2 = await ShopStore.dispatch("createPoint", this.pointFrom);
+        // console.log(res2);
+        if (res2.success) {
+          this.newPoint = ShopStore.getters.getNewPoint;
+          this.setUpdateUserAllPoint();
+          // console.log(this.setUpdateUserAllPoint);
+          let res3 = await ShopStore.dispatch(
+            "updatePointAndMoneyToUser",
+            this.updateUserAllPoint
+          );
+          console.log(res3.success);
+          if (res3.success) {
+            this.$swal(
+              "Purchases Success",
+              `${this.currentUser.user.username} purchase ${this.product.name}.`,
+              "success"
+            );
+          }
+        }
+      }
+    },
   },
 };
 </script>

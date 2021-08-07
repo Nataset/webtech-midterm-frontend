@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import AuthService from '@/services/AuthService';
 import PurchaseProduct from '../services/PurchaseProduct';
+import AddReward from '../services/AddReward.js';
 
 const end_point = process.env.SHOP_VUE_APP_SHOP_ENDPOINT || 'http://localhost:1337';
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
         newPoint: '',
         newPurchase: '',
         newRedeem: '',
+        newReward: '',
     },
     getters: {
         getAllUser: state => state.allUser,
@@ -34,10 +36,13 @@ export default new Vuex.Store({
         getProductList: state => state.product,
         getRewardList: state => state.reward,
         getEndPoint: state => state.endPoint,
-        isAuthen: state => state.currentUser.isAuthen,
         getNewPoint: state => state.newPoint,
         getNewPurchase: state => state.newPurchase,
         getNewRedeem: state => state.newRedeem,
+        getNewImage: state => state.newImage,
+        getNewReward: state => state.newReward,
+        isAuthen: state => state.currentUser.isAuthen,
+        isAdmin: state => state.currentUser.user.role.type == 'admin',
     },
     mutations: {
         fetchAllUser(state, { res }) {
@@ -79,6 +84,12 @@ export default new Vuex.Store({
         },
         setNewRedeem(state, newRedeem) {
             state.newRedeem = newRedeem;
+        },
+        setNewImage(state, newImage) {
+            state.newImage = newImage;
+        },
+        setNewReward(state, newReward) {
+            state.reward.push(newReward);
         },
     },
     actions: {
@@ -143,8 +154,7 @@ export default new Vuex.Store({
             commit('setMoney', money);
         },
         async fetchCurrentUser({ commit }) {
-            let res = await AuthService.fetchUser();
-            // console.log(res);
+            let res = await AuthService.fetchUser(this.state.currentUser.user);
             commit('updateUser', res);
         },
         async createPurchase({ commit }, { user, product, time }) {
@@ -169,6 +179,17 @@ export default new Vuex.Store({
             let res = await PurchaseProduct.createRedeem({ user, reward, time });
             commit('setNewRedeem', res);
             return res;
+        },
+
+        async uploadImage({ commit }, image) {
+            const res = await AddReward.uploadImage(image);
+            commit('setNewImage', res.photo);
+        },
+
+        async AddReward({ commit }, body) {
+            const res = await AddReward.createReward(body);
+            if (res.success) commit('setNewReward', res.reward);
+            else commit('setNewReward', false);
         },
     },
     modules: {},
