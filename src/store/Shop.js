@@ -89,7 +89,7 @@ export default new Vuex.Store({
             state.newImage = newImage;
         },
         setNewReward(state, newReward) {
-            state.reward.push(newReward);
+            state.newReward = newReward;
         },
     },
     actions: {

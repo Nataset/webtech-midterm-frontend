@@ -9,7 +9,7 @@
                     :reward="reward"
                     :endPoint="endPoint"
                 ></reward>
-                <reward-add v-if="isAdmin()"></reward-add>
+                <reward-add v-if="isAdmin()" @send="receive"></reward-add>
             </div>
         </div>
     </div>
@@ -31,10 +31,14 @@ export default {
             endPoint: '',
         };
     },
-    async created() {
+    async mounted() {
         await this.initData();
     },
     methods: {
+        receive() {
+            this.initData();
+        },
+
         async initData() {
             await ShopStore.dispatch('fetchAllreward');
             this.fetchRewardData();
@@ -43,6 +47,7 @@ export default {
         },
 
         fetchRewardData() {
+            this.availableReward = [];
             this.allReward = ShopStore.getters.getRewardList;
             this.allReward.forEach(reward => {
                 if (reward.available) {
