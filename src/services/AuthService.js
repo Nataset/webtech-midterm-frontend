@@ -99,8 +99,8 @@ export default {
         localStorage.removeItem(auth_key);
     },
 
-    async fetchUser() {
-        let url = api_endpoint + '/users/me';
+    async fetchUser({ id }) {
+        let url = api_endpoint + '/users/' + id;
         let header = this.getApiHeader();
         let res = await Axios.get(url, header);
         return res.data;

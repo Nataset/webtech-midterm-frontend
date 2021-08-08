@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import AuthService from '@/services/AuthService';
 import PurchaseProduct from '../services/PurchaseProduct';
+import EditReward from '../services/EditReward.js';
 
 const end_point = process.env.SHOP_VUE_APP_SHOP_ENDPOINT || 'http://localhost:1337';
 
@@ -27,6 +28,9 @@ export default new Vuex.Store({
         newPoint: '',
         newPurchase: '',
         newRedeem: '',
+        newReward: '',
+        deleteRewardResult: '',
+        editRewardResult: '',
     },
     getters: {
         getAllUser: state => state.allUser,
@@ -34,10 +38,15 @@ export default new Vuex.Store({
         getProductList: state => state.product,
         getRewardList: state => state.reward,
         getEndPoint: state => state.endPoint,
-        isAuthen: state => state.currentUser.isAuthen,
         getNewPoint: state => state.newPoint,
         getNewPurchase: state => state.newPurchase,
         getNewRedeem: state => state.newRedeem,
+        getNewImage: state => state.newImage,
+        getNewReward: state => state.newReward,
+        getDeleteRewardResult: state => state.deleteRewardResult,
+        getEditRewardResult: state => state.editRewardResult,
+        isAuthen: state => state.currentUser.isAuthen,
+        isAdmin: state => state.currentUser.user.role.type == 'admin',
     },
     mutations: {
         fetchAllUser(state, { res }) {
@@ -79,6 +88,21 @@ export default new Vuex.Store({
         },
         setNewRedeem(state, newRedeem) {
             state.newRedeem = newRedeem;
+        },
+        setNewImage(state, newImage) {
+            // console.log('This is from setNewimage');
+            // console.log(state.newImage);
+            state.newImage = newImage;
+            // console.log(state.newImage);
+        },
+        setNewReward(state, newReward) {
+            state.newReward = newReward;
+        },
+        setDeleteRewardResult(state, result) {
+            state.deleteRewardResult = result;
+        },
+        setEditRewardResult(state, result) {
+            state.editRewardResult = result;
         },
     },
     actions: {
@@ -143,8 +167,7 @@ export default new Vuex.Store({
             commit('setMoney', money);
         },
         async fetchCurrentUser({ commit }) {
-            let res = await AuthService.fetchUser();
-            // console.log(res);
+            let res = await AuthService.fetchUser(this.state.currentUser.user);
             commit('updateUser', res);
         },
         async createPurchase({ commit }, { user, product, time }) {
@@ -169,6 +192,29 @@ export default new Vuex.Store({
             let res = await PurchaseProduct.createRedeem({ user, reward, time });
             commit('setNewRedeem', res);
             return res;
+        },
+
+        async uploadImage({ commit }, image) {
+            const res = await EditReward.uploadImage(image);
+            commit('setNewImage', res.photo);
+        },
+
+        async addReward({ commit }, body) {
+            const res = await EditReward.createReward(body);
+            res.success ? commit('setNewReward', res.reward) : commit('setNewReward', false);
+        },
+
+        async deleteReward({ commit }, id) {
+            const res = await EditReward.deleteReward(id);
+            res.success
+                ? commit('setDeleteRewardResult', res.reward)
+                : commit('setDeleteRewardResult', false);
+        },
+
+        async EditReward({ commit }, body) {
+            const res = await EditReward.updateReward(body);
+            console.log(res);
+            commit('setEditRewardResult', res.success);
         },
     },
     modules: {},

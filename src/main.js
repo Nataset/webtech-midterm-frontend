@@ -5,10 +5,11 @@ import store from './store';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 import VueSwal from 'vue-swal';
-import VueMoment from 'vue-moment'
- 
-Vue.use(VueMoment, {
-})
+import VueMoment from 'vue-moment';
+import VModal from 'vue-js-modal';
+
+Vue.use(VModal);
+Vue.use(VueMoment, {});
 Vue.use(VueSwal);
 Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
