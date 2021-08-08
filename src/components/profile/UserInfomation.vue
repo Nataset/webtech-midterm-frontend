@@ -27,75 +27,81 @@
         </tr>
       </table>
     </div>
-    <div>
+    <div >
       <h2 class="title">Point</h2>
       <h3 class="title">Total Point : {{ currentUser.user.allPoint }}</h3>
-      <table class="table-container point">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Date</th>
-            <th>Type</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(points, index) in currentUser.user.points" :key="index">
-            <td>{{ index + 1 }}</td>
-            <td>{{ setDateFormat(points.created_at) }}</td>
-            <td>{{ points.type }}</td>
-            <td>{{ points.amount }} point</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="scroll-wrap">
+        <table class="table-container point">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(points, index) in currentUser.user.points" :key="index">
+              <td>{{ index + 1 }}</td>
+              <td>{{ setDateFormat(points.created_at) }}</td>
+              <td>{{ points.type }}</td>
+              <td>{{ points.amount }} point</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div>
       <h2 class="title">Purchased History</h2>
-      <table class="table-container purchase">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Purchased Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(Purchased, index) in currentUser.user.purchases"
-            :key="index"
-          >
-            <td>{{ index + 1 }}</td>
-            <td>{{ Purchased.product.name }}</td>
-            <td>{{ Purchased.product.price }} bath</td>
-            <td>{{ setDateFormat(Purchased.time) }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="scroll-wrap">
+        <table class="table-container purchase">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Product Name</th>
+              <th>Price</th>
+              <th>Purchased Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(Purchased, index) in currentUser.user.purchases"
+              :key="index"
+            >
+              <td>{{ index + 1 }}</td>
+              <td>{{ Purchased.product.name }}</td>
+              <td>{{ Purchased.product.price }} bath</td>
+              <td>{{ setDateFormat(Purchased.time) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div>
       <h2 class="title">Reward History</h2>
-      <table class="table-container reward">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Reward Name</th>
-            <th>Price</th>
-            <th>Redeemed Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(redeemed, redeemindex) in currentUser.user.redeems"
-            :key="redeemindex"
-          >
-            <td>{{ redeemindex + 1 }}</td>
-            <td>{{ redeemed.reward.name }}</td>
-            <td>{{ redeemed.reward.point }} point</td>
-            <td>{{ setDateFormat(redeemed.time) }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="scroll-wrap">
+        <table class="table-container reward">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Reward Name</th>
+              <th>Price</th>
+              <th>Redeemed Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(redeemed, redeemindex) in currentUser.user.redeems"
+              :key="redeemindex"
+            >
+              <td>{{ redeemindex + 1 }}</td>
+              <td>{{ redeemed.reward.name }}</td>
+              <td>{{ redeemed.reward.point }} point</td>
+              <td>{{ setDateFormat(redeemed.time) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -196,6 +202,7 @@ export default {
 .main-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  column-gap: 2em;
   margin: 1em auto;
   width: 1000px;
   h2, h3 {
@@ -205,8 +212,8 @@ export default {
   .table-container {
     text-align: left;
     overflow: hidden;
-    width: 80%;
-    margin: 1em auto;
+    width: 100%;
+    margin: 0 auto;
     display: table;
     padding: 0 0 8em 0;
     border-radius: 10px;
@@ -231,6 +238,7 @@ export default {
     td:first-child { 
       color: #FB667A;
       min-width: 20px;
+      text-align: center;
     }
     th{
       text-align: center;
@@ -273,7 +281,6 @@ export default {
     }
   }
   .point {
-    width: 90%;
     td {
       &:nth-child(2), &:nth-child(3){
         text-align: center;
@@ -285,7 +292,6 @@ export default {
     }  
   }
   .purchase {
-    width: 95%;
     td {
       padding-right: .5em;
       &:first-child {
@@ -301,9 +307,7 @@ export default {
     }
   }
   .reward {
-    width: 95%;
      td {
-       
         &:nth-child(3) {
           text-align: right;
         }
@@ -332,5 +336,25 @@ export default {
         0 10px 10px rgba(0,0,0,.2), 
         0 20px 20px rgba(0,0,0,.15);
   }  
+}
+.scroll-wrap{
+  display: block;
+  height: 220px;
+  overflow: auto;
+  margin-top: 2em;
+  border-radius: 6px;
+  
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background-color: #1F2739;
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 30px;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(182, 70%, 65%);
+  border-radius: 30px;
 }
 </style>>

@@ -1,21 +1,18 @@
 <template>
-  <div align='center'>
-      <h2>Login</h2>
-      <form @submit.prevent="login">
-      <table>
-          <tr>
-              <td>Username :</td>
-              <td><input type="text" v-model="loginFrom.username" placeholder="username"></td>
-          </tr>
-          <tr>
-              <td>Password :</td>
-              <td><input type="password" v-model="loginFrom.password" placeholder="password"></td>
-          </tr>
-      </table>
-      <div>
-      <button>Login</button>
-      </div>
-      </form>
+  <div class="main-container">
+    <h2 class="title">Login</h2>
+    <form @submit.prevent="login" class="custom-form">
+    <div>
+        <label>Username :</label>
+        <input type="text" v-model="loginFrom.username" placeholder="username">
+    </div>  
+    <div>  
+        <label>Password :</label>
+        <input type="password" v-model="loginFrom.password" placeholder="password">
+    </div>
+    <button>Login</button>
+    
+    </form>
   </div>
 </template>
 
@@ -56,6 +53,15 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.main-container {
+    text-align: center;
+    .custom-form {
+        width: 400px;
+    }
+}
 
-</style>
+
+
+</style>>
+

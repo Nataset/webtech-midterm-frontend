@@ -175,10 +175,16 @@ export default {
           }
           input {
               text-align: right;
+              border-radius: 6px;
+              outline: none;
+              border: 2px solid gray;
               &::-webkit-outer-spin-button,
               &::-webkit-inner-spin-button {
                 -webkit-appearance: none;
                 margin-right: 1em;
+              }
+              &:hover, &:focus {
+                border: 2px solid black;
               }
           }
       }

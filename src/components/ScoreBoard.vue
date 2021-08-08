@@ -1,7 +1,7 @@
 <template>
     <div class="scoreboard">
         <ol>
-            <div class="title">
+            <div class="header">
                 <h3 >Highest Point</h3>
             </div>
             <li v-for="(user, index) in findTopList()" :key="index">
@@ -47,7 +47,7 @@ $clr-red: hsl(358, 84%, 55%);
     ol {
         list-style-type: none;
         transform: translateX(-4%);
-        .title {
+        .header {
             background-color: hsl(210, 45%, 24%);
             margin: 0;
             height: 50px;
