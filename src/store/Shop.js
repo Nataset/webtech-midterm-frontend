@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import AuthService from '@/services/AuthService';
 import PurchaseProduct from '../services/PurchaseProduct';
-import AddReward from '../services/AddReward.js';
+import EditReward from '../services/EditReward.js';
 
 const end_point = process.env.SHOP_VUE_APP_SHOP_ENDPOINT || 'http://localhost:1337';
 
@@ -29,6 +29,8 @@ export default new Vuex.Store({
         newPurchase: '',
         newRedeem: '',
         newReward: '',
+        deleteRewardResult: '',
+        editRewardResult: '',
     },
     getters: {
         getAllUser: state => state.allUser,
@@ -41,6 +43,8 @@ export default new Vuex.Store({
         getNewRedeem: state => state.newRedeem,
         getNewImage: state => state.newImage,
         getNewReward: state => state.newReward,
+        getDeleteRewardResult: state => state.deleteRewardResult,
+        getEditRewardResult: state => state.editRewardResult,
         isAuthen: state => state.currentUser.isAuthen,
         isAdmin: state => state.currentUser.user.role.type == 'admin',
     },
@@ -86,10 +90,19 @@ export default new Vuex.Store({
             state.newRedeem = newRedeem;
         },
         setNewImage(state, newImage) {
+            // console.log('This is from setNewimage');
+            // console.log(state.newImage);
             state.newImage = newImage;
+            // console.log(state.newImage);
         },
         setNewReward(state, newReward) {
             state.newReward = newReward;
+        },
+        setDeleteRewardResult(state, result) {
+            state.deleteRewardResult = result;
+        },
+        setEditRewardResult(state, result) {
+            state.editRewardResult = result;
         },
     },
     actions: {
@@ -182,14 +195,26 @@ export default new Vuex.Store({
         },
 
         async uploadImage({ commit }, image) {
-            const res = await AddReward.uploadImage(image);
+            const res = await EditReward.uploadImage(image);
             commit('setNewImage', res.photo);
         },
 
-        async AddReward({ commit }, body) {
-            const res = await AddReward.createReward(body);
-            if (res.success) commit('setNewReward', res.reward);
-            else commit('setNewReward', false);
+        async addReward({ commit }, body) {
+            const res = await EditReward.createReward(body);
+            res.success ? commit('setNewReward', res.reward) : commit('setNewReward', false);
+        },
+
+        async deleteReward({ commit }, id) {
+            const res = await EditReward.deleteReward(id);
+            res.success
+                ? commit('setDeleteRewardResult', res.reward)
+                : commit('setDeleteRewardResult', false);
+        },
+
+        async EditReward({ commit }, body) {
+            const res = await EditReward.updateReward(body);
+            console.log(res);
+            commit('setEditRewardResult', res.success);
         },
     },
     modules: {},

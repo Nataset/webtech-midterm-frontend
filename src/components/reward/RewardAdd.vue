@@ -99,7 +99,7 @@ export default {
     },
     methods: {
         update() {
-            this.$emit('send', { test: 'TEST' });
+            this.$emit('send', 'update sent from RewardAdd');
         },
         showAdd() {
             this.$modal.show('add');
@@ -125,6 +125,7 @@ export default {
             // read the image file as a data URL.
             reader.readAsDataURL(file);
             this.addRewardForm.image = file;
+            console.log(file);
         },
 
         setImage(event) {
@@ -132,12 +133,17 @@ export default {
         },
 
         async createNewReward(body) {
+            // console.log('What the fuck');
+            // console.log(body.image);
             await ShopStore.dispatch('uploadImage', body.image);
+            // console.log('test', this.uploadedImage);
             this.uploadedImage = ShopStore.getters.getNewImage;
+            // console.log('test', this.uploadedImage);
             body.image = this.uploadedImage;
 
+            //check if Image really uploaded
             if (this.uploadedImage) {
-                await ShopStore.dispatch('AddReward', body);
+                await ShopStore.dispatch('addReward', body);
                 this.newReward = ShopStore.getters.getNewReward;
             } else {
                 console.error('upload image fail');
@@ -148,10 +154,9 @@ export default {
             if (this.checkInput()) {
                 try {
                     await this.createNewReward(this.addRewardForm);
-                    this.$swal('Add success', '', 'success');
+                    this.$swal('Add success', '', 'success').then(() => this.update());
                     this.resetForm();
                     this.hideAdd();
-                    this.update();
                 } catch {
                     this.$swal('Something went wrong Sorry', '', 'error');
                 }
@@ -174,6 +179,7 @@ export default {
                 image: '',
             };
             this.imageName = '';
+            this.uploadedImage = '';
         },
 
         checkInput() {
@@ -194,7 +200,6 @@ export default {
             );
         },
     },
-    mounted() {},
 };
 </script>
 <style lang="scss" scoped>

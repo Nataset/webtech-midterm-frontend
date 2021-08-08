@@ -10,12 +10,17 @@
             <button
                 type="button"
                 class="btn btn-primary mt-4 mb-1"
-                @click="editReward"
+                @click="showEdit"
                 v-if="isAdmin()"
             >
                 Edit
             </button>
-            <button type="button" class="btn btn-danger mb-4" @click="editReward" v-if="isAdmin()">
+            <button
+                type="button"
+                class="btn btn-danger mb-4"
+                @click="deleteReward"
+                v-if="isAdmin()"
+            >
                 Delete
             </button>
         </div>
@@ -55,6 +60,11 @@ export default {
             },
             newRedeem: '',
             newPoint: '',
+            editFrom: {
+                name: '',
+                point: '',
+                stock: '',
+            },
         };
     },
     created() {
@@ -111,7 +121,7 @@ export default {
         },
         async redeemReward() {
             this.setRedeenFrom();
-            console.log(this.redeemFrom);
+            // console.log(this.redeemFrom);
             let res = await ShopStore.dispatch('createRedeem', this.redeemFrom);
             // console.log(res);
             this.newRedeem = ShopStore.getters.getNewRedeem;
@@ -170,9 +180,29 @@ export default {
                 }
             });
         },
-        editReward() {
-            console.log('TEST');
+
+        async deleteReward() {
+            await ShopStore.dispatch('deleteReward', this.reward.id);
+            const result = ShopStore.getters.getDeleteRewardResult;
+            result
+                ? this.$swal('Delete success', '', 'success').then(() => this.update(result))
+                : this.$swal("Something went wrong can't delete reward", '', 'error');
         },
+
+        update(result) {
+            this.$emit('send', result);
+        },
+        showEdit() {
+            this.$modal.show('edit');
+            this.$emit('send2', this.reward);
+        },
+
+        hideEdit() {
+            this.$modal.hide('edit');
+        },
+
+        onEdit() {},
+        onCancel() {},
     },
 };
 </script>

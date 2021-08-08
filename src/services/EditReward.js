@@ -11,14 +11,15 @@ export default {
 
         try {
             const res = await axios.post(url, fd, header);
-            if (res.status === 200) {
-                return {
-                    success: true,
-                    photo: res.data[0],
-                };
-            } else {
-                console.log('Error at upload image res', res);
-            }
+            // console.log('From EditReward:', res);
+            return res.status === 200
+                ? {
+                      success: true,
+                      photo: res.data[0],
+                  }
+                : {
+                      success: false,
+                  };
         } catch (e) {
             if (e.response.status === 400) {
                 return {
@@ -36,7 +37,7 @@ export default {
     async createReward({ name, point, stock, image }) {
         const url = `${api_endpoint}/rewards`;
         const header = AuthService.getApiHeader();
-        console.log(image);
+        // console.log(image);
         const body = {
             name: name,
             point: point,
@@ -45,7 +46,7 @@ export default {
         };
         try {
             const res = await axios.post(url, body, header);
-            console.log(res);
+            // console.log(res);
             if (res.status === 200) {
                 return {
                     success: true,
@@ -65,6 +66,51 @@ export default {
                     success: false,
                 };
             }
+        }
+    },
+
+    async deleteReward(id) {
+        const url = `${api_endpoint}/rewards/${id}`;
+        const header = AuthService.getApiHeader();
+        const body = {
+            available: false,
+        };
+        try {
+            const res = await axios.put(url, body, header);
+            // console.log(res);
+            if (res.status !== 200) throw 'deleteReward fail at html res != 200';
+            return {
+                success: true,
+                reward: res.data,
+            };
+        } catch {
+            return {
+                success: false,
+            };
+        }
+    },
+
+    async updateReward({ id, name, point, stock }) {
+        // console.log(id);
+        const url = `${api_endpoint}/rewards/${id}`;
+        const header = AuthService.getApiHeader();
+        const body = {
+            name: name,
+            point: point,
+            stock: stock,
+        };
+
+        try {
+            const res = await axios.put(url, body, header);
+            if (res.status !== 200) throw 'edit error at html res != 200 ';
+            return {
+                success: true,
+                reward: res.data,
+            };
+        } catch {
+            return {
+                success: false,
+            };
         }
     },
 };
