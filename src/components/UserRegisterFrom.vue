@@ -98,7 +98,7 @@ export default {
                 firstname: '',
                 lastname: '',
                 money: 0,
-                allpoint: 0,
+                allPoint: 0,
             },
         };
     },

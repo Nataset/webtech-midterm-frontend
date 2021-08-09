@@ -216,6 +216,22 @@ export default new Vuex.Store({
             console.log(res);
             commit('setEditRewardResult', res.success);
         },
+
+        async updateProductStock({ commit },{stock,available,id}){
+            // console.log(id);
+            // console.log(stock);
+            // console.log(available);
+            let res = await PurchaseProduct.updateProductStock({stock,available,id})
+            return res
+        },
+
+        async updateRewardStock({ commit },{stock,available,id}){
+            // console.log(id);
+            // console.log(stock);
+            // console.log(available);
+            let res = await PurchaseProduct.updateRewardStock({stock,available,id})
+            return res
+        }
     },
     modules: {},
 });

@@ -48,6 +48,12 @@ export default {
       },
       newPurchase: "",
       newPoint: "",
+      updateProductStock:{
+        stock:0,
+        available:true,
+        id:0
+      },
+
     };
   },
   created() {
@@ -130,6 +136,13 @@ export default {
       this.updateUserAllPoint.money =
         parseInt(this.currentUser.user.money) - parseInt(this.product.price);
     },
+    setUpdateStock(){
+      this.updateProductStock.id = this.product.id
+      this.updateProductStock.stock = parseInt(this.product.stock) - 1
+      if(this.updateProductStock.stock <= 0){
+        this.updateProductStock.available = false
+      }
+    },
     isAuthen() {
       return ShopStore.getters.isAuthen;
     },
@@ -150,6 +163,7 @@ export default {
         if (res2.success) {
           this.newPoint = ShopStore.getters.getNewPoint;
           this.setUpdateUserAllPoint();
+          
           // console.log(this.setUpdateUserAllPoint);
           let res3 = await ShopStore.dispatch(
             "updatePointAndMoneyToUser",
@@ -157,11 +171,15 @@ export default {
           );
           console.log(res3.success);
           if (res3.success) {
-            this.$swal(
-              "Purchases Success",
-              `${this.currentUser.user.username} purchase ${this.product.name}.`,
-              "success"
-            );
+            this.setUpdateStock();
+            let res4 = await ShopStore.dispatch("updateProductStock", this.updateProductStock)
+            if(res4.success){
+              this.$swal(
+                "Purchases Success",
+                `${this.currentUser.user.username} purchase ${this.product.name}.`,
+                "success"
+              );
+            }
           }
         }
       }

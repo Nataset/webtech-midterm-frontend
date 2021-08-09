@@ -137,5 +137,69 @@ export default {
                 }
             }
         }
-    }
+    },
+
+    async updateProductStock({stock,available,id}){
+        try {
+            let url = api_endpoint+"/products/"+id
+            let body = {
+                stock:stock,
+                available:available,
+            }
+            let header = AuthService.getApiHeader()
+            let res = await Axios.put(url, body, header)
+            if(res.status === 200){
+                return {
+                    success: true,
+                    user: res.data,
+                }
+            }else{
+                console.log("NOT 200", res);
+            }
+        } catch (e) {
+            if(e.response.status === 400){
+                // console.log(e.response.data.message[0].messages[0].message);
+                return {
+                    success: false,
+                    message: e.response.data.message[0].messages[0].message
+                }
+            } else {
+                return {
+                    success: false,
+                }
+            }
+        }
+    },
+
+    async updateRewardStock({stock,available,id}){
+        try {
+            let url = api_endpoint+"/rewards/"+id
+            let body = {
+                stock:stock,
+                available:available,
+            }
+            let header = AuthService.getApiHeader()
+            let res = await Axios.put(url, body, header)
+            if(res.status === 200){
+                return {
+                    success: true,
+                    user: res.data,
+                }
+            }else{
+                console.log("NOT 200", res);
+            }
+        } catch (e) {
+            if(e.response.status === 400){
+                // console.log(e.response.data.message[0].messages[0].message);
+                return {
+                    success: false,
+                    message: e.response.data.message[0].messages[0].message
+                }
+            } else {
+                return {
+                    success: false,
+                }
+            }
+        }
+    },
 }
