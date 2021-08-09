@@ -296,7 +296,6 @@ export default {
         }
     }
     .reward {
-        width: 95%;
         td {
             &:nth-child(3) {
                 text-align: right;

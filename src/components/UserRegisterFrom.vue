@@ -168,14 +168,15 @@ export default {
         display: flex;
         flex-direction: column;
         margin: 0.4em auto;
+        
         input {
             width: 100%;
         }
         &:last-child {
-            margin: 0.4em 0.5em;
+            padding: 0 1em;
+            width: 100%;
             input {
-                margin: 0 auto 0.4em auto;
-                width: 208%;
+                width: 435px;
             }
         }
         label {

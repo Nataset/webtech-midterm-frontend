@@ -58,6 +58,10 @@ export default {
     text-align: center;
     .custom-form {
         width: 400px;
+        label {
+            width: 90px;
+        }
+        
     }
 }
 
