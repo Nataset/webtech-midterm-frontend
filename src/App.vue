@@ -28,6 +28,7 @@ body {
 
 #minHeight {
     min-height: 700px;
+    position: relative;
 }
 
 .min-height #app {
