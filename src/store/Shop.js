@@ -22,9 +22,12 @@ export default new Vuex.Store({
         currentUser: initialStateUser,
         endPoint: end_point,
         allUser: [],
+        allUserExceptAdmin: [],
         product: [],
         reward: [],
         point: [],
+        redeemList: [],
+        purchaseList: [],
         newPoint: '',
         newPurchase: '',
         newRedeem: '',
@@ -37,6 +40,8 @@ export default new Vuex.Store({
         getCurrentUser: state => state.currentUser,
         getProductList: state => state.product,
         getRewardList: state => state.reward,
+        getPurchaseList: state => state.purchaseList,
+        getRedeemList: state => state.redeemList,
         getEndPoint: state => state.endPoint,
         getNewPoint: state => state.newPoint,
         getNewPurchase: state => state.newPurchase,
@@ -45,12 +50,16 @@ export default new Vuex.Store({
         getNewReward: state => state.newReward,
         getDeleteRewardResult: state => state.deleteRewardResult,
         getEditRewardResult: state => state.editRewardResult,
+        getAllUserExceptAdmin: state => state.allUserExceptAdmin,
         isAuthen: state => state.currentUser.isAuthen,
         isAdmin: state => state.currentUser.user.role.type == 'admin',
     },
     mutations: {
         fetchAllUser(state, { res }) {
             state.allUser = res.data;
+        },
+        fetchAllUserExceptAdmin(state, { res }) {
+            state.allUserExceptAdmin = res.data;
         },
         fetchProduct(state, { res }) {
             state.product = res.data;
@@ -104,12 +113,23 @@ export default new Vuex.Store({
         setEditRewardResult(state, result) {
             state.editRewardResult = result;
         },
+        setRedeemList(state, redeem) {
+            state.redeemList = redeem;
+        },
+        setPurchaseList(state, purchase) {
+            state.purchaseList = purchase;
+        },
     },
     actions: {
         async fetchAllUser({ commit }) {
             let res = await axios.get(end_point + '/users');
             // console.log(res)
             commit('fetchAllUser', { res });
+        },
+        async fetchAllUserExceptAdmin({ commit }) {
+            let res = await axios.get(end_point + '/users?role=1');
+            console.log(res);
+            commit('fetchAllUserExceptAdmin', { res });
         },
         async fetchAllproduct({ commit }) {
             let res = await axios.get(end_point + '/products');
@@ -215,6 +235,18 @@ export default new Vuex.Store({
             const res = await EditReward.updateReward(body);
             console.log(res);
             commit('setEditRewardResult', res.success);
+        },
+
+        async fetchRedeem({ commit }) {
+            const url = end_point + '/redeems';
+            const res = await axios.get(url);
+            commit('setRedeemList', res.data);
+        },
+
+        async fetchPurchase({ commit }) {
+            const url = end_point + '/purchases';
+            const res = await axios.get(url);
+            commit('setPurchaseList', res.data);
         },
     },
     modules: {},

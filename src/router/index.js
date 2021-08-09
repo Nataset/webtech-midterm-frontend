@@ -8,6 +8,7 @@ import LeaderBoard from '@/views/LeaderBoard.vue';
 import Logout from '@/views/Logout.vue';
 import Topup from '@/views/Topup.vue';
 import Reward from '../views/Rewards.vue';
+import OrderList from '../views/OrderList.vue';
 
 Vue.use(VueRouter);
 
@@ -59,6 +60,11 @@ const routes = [
         path: '/reward',
         name: 'Rewards',
         component: Reward,
+    },
+    {
+        path: '/orderlist',
+        name: 'OrderList',
+        component: OrderList,
     },
 ];
 
