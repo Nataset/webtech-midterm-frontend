@@ -64,12 +64,12 @@ export default {
                 name: '',
                 point: '',
                 stock: '',
-            },      
-            updateRewardStock:{
-                stock:0,
-                available:true,
-                id:0
-            }
+            },
+            updateRewardStock: {
+                stock: 0,
+                available: true,
+                id: 0,
+            },
         };
     },
     created() {
@@ -118,11 +118,11 @@ export default {
             // console.log(this.updateUserAllPoint.allPoint);
             this.updateUserAllPoint.money = parseInt(this.currentUser.user.money);
         },
-        setUpdateStock(){
-            this.updateRewardStock.id = this.reward.id
-            this.updateRewardStock.stock = parseInt(this.reward.stock)  - 1
-            if(this.updateRewardStock.stock <= 0){
-                this.updateRewardStock.available = false
+        setUpdateStock() {
+            this.updateRewardStock.id = this.reward.id;
+            this.updateRewardStock.stock = parseInt(this.reward.stock) - 1;
+            if (this.updateRewardStock.stock <= 0) {
+                this.updateRewardStock.available = false;
             }
         },
         isAuthen() {
@@ -152,14 +152,19 @@ export default {
                         this.updateUserAllPoint,
                     );
                     if (res3.success) {
-                        this.setUpdateStock()
-                        let res4 = await ShopStore.dispatch("updateRewardStock", this.updateRewardStock)
-                        if(res4.success){
+                        this.setUpdateStock();
+                        let res4 = await ShopStore.dispatch(
+                            'updateRewardStock',
+                            this.updateRewardStock,
+                        );
+                        if (res4.success) {
                             this.$swal(
                                 'Redeem Success',
                                 `${this.currentUser.user.username} redeem ${this.reward.name}.`,
                                 'success',
-                            );
+                            ).then(() => {
+                                location.reload();
+                            });
                         }
                     }
                 }
@@ -183,7 +188,7 @@ export default {
                         this.$router.push('/login');
                     } else if (this.isAdmin() == true) {
                         this.$swal('You are Admin.', "You can't redeem shit too", 'error');
-                    } else if (this.currentUser.user.point < this.reward.point) {
+                    } else if (this.currentUser.user.allPoint < this.reward.point) {
                         this.$swal(
                             'Your point is not enough to buy',
                             'Please check and redeem again',

@@ -15,10 +15,10 @@
                     <label class="ms-3" style="font-family: Raleway">LOGO</label>
                 </div>
                 <div class="col align-self-center text-end">
-                    <lable class="me-5" v-if="isAuthen()">
+                    <label class="me-5" v-if="isAuthen()">
                         Username:
-                        {{ currentUser ? currentUser.user.username : 'Fail to Load' }}</lable
-                    >
+                        {{ currentUser ? currentUser.user.username : 'Fail to Load' }}
+                    </label>
                     <label class="me-2 text-danger" v-if="isAuthen() && !isAdmin()">
                         Money:
                         {{ currentUser ? currentUser.user.money.toFixed(2) : 'Fail to Load' }}
