@@ -2,7 +2,7 @@
     <div class="mb-4" id="flex-content">
         <img v-bind:src="picURL" class="mt-4" width="250" height="250" />
         <h4 class="mt-3">{{ title }}</h4>
-        <h5 class="mt-1">Price: {{ price }} Bath</h5>
+        <h5 class="mt-1">Price: {{ price }} Baht</h5>
         <div>
             <button type="button" class="btn btn-danger px-5 mb-4" @click="buyProduct">
                 &nbsp;&nbsp;&nbsp;&nbsp;BUY NOW!!&nbsp;&nbsp;&nbsp;&nbsp;

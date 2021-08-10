@@ -23,7 +23,7 @@
                 </tr>
                 <tr>
                     <td>Money</td>
-                    <td>{{ currentUser.user.money }} bath</td>
+                    <td>{{ currentUser.user.money }} baht</td>
                 </tr>
             </table>
         </div>
@@ -67,7 +67,7 @@
                         <tr v-for="(Purchased, index) in currentUser.user.purchases" :key="index">
                             <td>{{ index + 1 }}</td>
                             <td>{{ Purchased.product.name }}</td>
-                            <td>{{ Purchased.product.price }} bath</td>
+                            <td>{{ Purchased.product.price }} baht</td>
                             <td>{{ setDateFormat(Purchased.time) }}</td>
                         </tr>
                     </tbody>
@@ -335,5 +335,4 @@ export default {
 ::-webkit-scrollbar-thumb {
     background: hsl(182, 70%, 65%);
     border-radius: 30px;
-}</style
->>
+}</style>>

@@ -3,7 +3,7 @@
         <div class="topup-container mt-5" v-if="isAuthen()">
             <div class="card">
                 <h2 class="card-title">Your Wallet Balance :</h2>
-                <h3 class="card-text">{{ currentUser.money }} Bath</h3>
+                <h3 class="card-text">{{ currentUser.money }} Baht</h3>
             </div>
             <div class="form-warp">
                 <h4>Pumping Your Money</h4>
