@@ -1,6 +1,6 @@
 <template>
     <div class="main-container">
-        <div class="title">Leaderboard</div>
+        <div class="title">Leader board</div>
         <form @submit.prevent="getSelectedData">
             <div class="date-selector">
                 <div>

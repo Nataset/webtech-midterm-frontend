@@ -71,7 +71,7 @@
                 </li>
                 <li class="nav-item text-center mx-5">
                     <router-link class="nav-link text-uppercase" to="/leaderboard"
-                        >Leaderboard</router-link
+                        >Leader board</router-link
                     >
                 </li>
                 <li class="nav-item text-center mx-5">
